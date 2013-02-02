@@ -91,7 +91,7 @@
 }
 
 - (id)tokenField:(APTokenField *)tokenField objectAtResultsIndex:(NSUInteger)index {
-    return [results objectAtIndex:index];
+    return results[index];
 }
 
 - (void)tokenField:(APTokenField *)tokenField searchQuery:(NSString *)query {

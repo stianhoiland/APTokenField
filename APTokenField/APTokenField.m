@@ -84,7 +84,7 @@ static NSString *const kHiddenCharacter = @"\u200B";
         shadowLayer = [[CAGradientLayer alloc] init];
         CGColorRef darkColor = [UIColor colorWithRed:0.0 green:0.0 blue:0.0 alpha:0.5].CGColor;
         CGColorRef lightColor = [UIColor colorWithWhite:1 alpha:0].CGColor;
-        shadowLayer.colors = [NSArray arrayWithObjects:(id)darkColor, (id)lightColor, nil];
+        shadowLayer.colors = @[(id)darkColor, (id)lightColor];
         [self.layer addSublayer:shadowLayer];
     }
     
@@ -328,7 +328,7 @@ static NSString *const kHiddenCharacter = @"\u200B";
     
     for (int i=0; i<[tokens count]; i++)
     {
-        APTokenView *t = [tokens objectAtIndex:i];
+        APTokenView *t = tokens[i];
         if ([t.object  isEqual:object])
         {
             [t removeFromSuperview];
@@ -348,7 +348,7 @@ static NSString *const kHiddenCharacter = @"\u200B";
 }
 
 - (id)objectAtIndex:(NSUInteger)index {
-    APTokenView *t = [tokens objectAtIndex:index];
+    APTokenView *t = tokens[index];
     return t.object;
 }
 
@@ -475,7 +475,7 @@ static NSString *const kHiddenCharacter = @"\u200B";
     // check if there are any highlighted tokens. If so, delete it and reveal the textfield again
     for (int i=0; i<[tokens count]; i++)
     {
-        APTokenView *t = [tokens objectAtIndex:i];
+        APTokenView *t = tokens[i];
         if (t.highlighted)
         {
             [self removeObject:t.object];
@@ -625,7 +625,7 @@ static NSString *const kHiddenCharacter = @"\u200B";
         // find the highlighted token, remove it, then make the textfield visible again
         for (int i=0; i<[tokens count]; i++)
         {
-            APTokenView *t = [tokens objectAtIndex:i];
+            APTokenView *t = tokens[i];
             if (t.highlighted)
             {
                 [self removeObject:t.object];
