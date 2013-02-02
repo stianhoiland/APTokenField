@@ -39,20 +39,20 @@
 #import <UIKit/UIKit.h>
 
 @interface APTokenField : UIControl <UITableViewDataSource, UITextFieldDelegate, UITableViewDelegate> {
-    id<APTokenFieldDataSource> __weak tokenFieldDataSource;
-    id<APTokenFieldDelegate> __weak tokenFieldDelegate;
-    APShadowView *shadowView;
-    APTextField *textField;
-    UIView *backingView;
-    UIView *tokenContainer;
-    NSMutableArray *tokens;
-    UIFont *font;
-    UITableView *resultsTable;
-    NSString *labelText;
-    UILabel *label;
-    NSUInteger numberOfResults;
-    UIView *rightView;
-    APSolidLine *solidLine;
+  id<APTokenFieldDataSource> __weak tokenFieldDataSource;
+  id<APTokenFieldDelegate> __weak tokenFieldDelegate;
+  APShadowView *shadowView;
+  APTextField *textField;
+  UIView *backingView;
+  UIView *tokenContainer;
+  NSMutableArray *tokens;
+  UIFont *font;
+  UITableView *resultsTable;
+  NSString *labelText;
+  UILabel *label;
+  NSUInteger numberOfResults;
+  UIView *rightView;
+  APSolidLine *solidLine;
 }
 
 @property (nonatomic, strong) UIFont *font;
@@ -83,8 +83,8 @@
  UITableViewCellStyleDefault with the value provided by
  tokenField:titleForObject: as the textLabel of the UITableViewCell. */
 - (UITableViewCell*)tokenField:(APTokenField*)tokenField
-                     tableView:(UITableView*)tableView
-                  cellForIndex:(NSUInteger)index;
+           tableView:(UITableView*)tableView
+          cellForIndex:(NSUInteger)index;
 - (CGFloat)resultRowsHeightForTokenField:(APTokenField*)tokenField;
 
 @end
