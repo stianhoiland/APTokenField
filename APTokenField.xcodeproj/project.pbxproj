@@ -7,6 +7,7 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		4EF9CF2916BD8F0E008A630B /* Default-568h@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 4EF9CF2816BD8F0E008A630B /* Default-568h@2x.png */; };
 		5B0D4A6E1497503B00A89219 /* UIKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 5B0D4A6D1497503B00A89219 /* UIKit.framework */; };
 		5B0D4A701497503B00A89219 /* Foundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 5B0D4A6F1497503B00A89219 /* Foundation.framework */; };
 		5B0D4A721497503B00A89219 /* CoreGraphics.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 5B0D4A711497503B00A89219 /* CoreGraphics.framework */; };
@@ -20,6 +21,7 @@
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
+		4EF9CF2816BD8F0E008A630B /* Default-568h@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "Default-568h@2x.png"; sourceTree = "<group>"; };
 		5B0D4A691497503B00A89219 /* APTokenField.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = APTokenField.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		5B0D4A6D1497503B00A89219 /* UIKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = UIKit.framework; path = System/Library/Frameworks/UIKit.framework; sourceTree = SDKROOT; };
 		5B0D4A6F1497503B00A89219 /* Foundation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Foundation.framework; path = System/Library/Frameworks/Foundation.framework; sourceTree = SDKROOT; };
@@ -57,6 +59,7 @@
 		5B0D4A5E1497503B00A89219 = {
 			isa = PBXGroup;
 			children = (
+				4EF9CF2816BD8F0E008A630B /* Default-568h@2x.png */,
 				5B0D4A731497503B00A89219 /* APTokenField */,
 				5B0D4A6C1497503B00A89219 /* Frameworks */,
 				5B0D4A6A1497503B00A89219 /* Products */,
@@ -160,6 +163,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				5B0D4A781497503B00A89219 /* InfoPlist.strings in Resources */,
+				4EF9CF2916BD8F0E008A630B /* Default-568h@2x.png in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -238,6 +242,7 @@
 		5B0D4A821497503B00A89219 /* Debug */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
+				CLANG_ENABLE_OBJC_ARC = YES;
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
 				GCC_PREFIX_HEADER = "APTokenField/APTokenField-Prefix.pch";
 				INFOPLIST_FILE = "APTokenField/APTokenField-Info.plist";
@@ -249,6 +254,7 @@
 		5B0D4A831497503B00A89219 /* Release */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
+				CLANG_ENABLE_OBJC_ARC = YES;
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
 				GCC_PREFIX_HEADER = "APTokenField/APTokenField-Prefix.pch";
 				INFOPLIST_FILE = "APTokenField/APTokenField-Info.plist";

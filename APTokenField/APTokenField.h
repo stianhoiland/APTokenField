@@ -39,8 +39,8 @@
 #import <UIKit/UIKit.h>
 
 @interface APTokenField : UIControl <UITableViewDataSource, UITextFieldDelegate, UITableViewDelegate> {
-    id<APTokenFieldDataSource> tokenFieldDataSource;
-    id<APTokenFieldDelegate> tokenFieldDelegate;
+    id<APTokenFieldDataSource> __weak tokenFieldDataSource;
+    id<APTokenFieldDelegate> __weak tokenFieldDelegate;
     APShadowView *shadowView;
     APTextField *textField;
     UIView *backingView;
@@ -55,13 +55,13 @@
     APSolidLine *solidLine;
 }
 
-@property (nonatomic, retain) UIFont *font;
+@property (nonatomic, strong) UIFont *font;
 @property (nonatomic, copy) NSString *labelText;
 @property (nonatomic, readonly) UITableView *resultsTable;
-@property (nonatomic, retain) UIView *rightView;
-@property (nonatomic, readonly) NSString *text;
-@property (nonatomic, assign) id<APTokenFieldDataSource> tokenFieldDataSource;
-@property (nonatomic, assign) id<APTokenFieldDelegate> tokenFieldDelegate;
+@property (nonatomic, strong) UIView *rightView;
+@property (weak, nonatomic, readonly) NSString *text;
+@property (nonatomic, weak) id<APTokenFieldDataSource> tokenFieldDataSource;
+@property (nonatomic, weak) id<APTokenFieldDelegate> tokenFieldDelegate;
 - (void)addObject:(id)object;
 - (void)removeObject:(id)object;
 - (NSUInteger)objectCount;

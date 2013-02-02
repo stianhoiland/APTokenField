@@ -84,7 +84,7 @@ static NSString *const kHiddenCharacter = @"\u200B";
         shadowLayer = [[CAGradientLayer alloc] init];
         CGColorRef darkColor = [UIColor colorWithRed:0.0 green:0.0 blue:0.0 alpha:0.5].CGColor;
         CGColorRef lightColor = [UIColor colorWithWhite:1 alpha:0].CGColor;
-        shadowLayer.colors = @[(id)darkColor, (id)lightColor];
+        shadowLayer.colors = @[(__bridge id)darkColor, (__bridge id)lightColor];
         [self.layer addSublayer:shadowLayer];
     }
     
@@ -96,11 +96,6 @@ static NSString *const kHiddenCharacter = @"\u200B";
     shadowLayer.frame = CGRectMake(0, 0, bounds.size.width, bounds.size.height);
 }
 
-- (void)dealloc {
-    [shadowLayer release];
-    
-    [super dealloc];
-}
 
 @end
 
@@ -109,15 +104,15 @@ static NSString *const kHiddenCharacter = @"\u200B";
 
 @interface APTokenView : UIView {
     NSString *title;
-    APTokenField *tokenField;
+    APTokenField *__weak tokenField;
     id object;
     BOOL highlighted;
 }
 
 @property (nonatomic, assign) BOOL highlighted;
-@property (nonatomic, retain) id object;
-@property (nonatomic, retain) NSString *title;
-@property (nonatomic, assign) APTokenField *tokenField;
+@property (nonatomic, strong) id object;
+@property (nonatomic, strong) NSString *title;
+@property (nonatomic, weak) APTokenField *tokenField;
 + (APTokenView*)tokenWithTitle:(NSString*)aTitle object:(id)anObject;
 - (id)initWithTitle:(NSString*)aTitle object:(id)anObject;
 
@@ -131,7 +126,7 @@ static NSString *const kHiddenCharacter = @"\u200B";
 @synthesize tokenField;
 
 + (APTokenView*)tokenWithTitle:(NSString*)aTitle object:(id)anObject {
-    return [[[APTokenView alloc] initWithTitle:aTitle object:anObject] autorelease];
+    return [[APTokenView alloc] initWithTitle:aTitle object:anObject];
 }
 
 - (id)initWithTitle:(NSString*)aTitle object:(id)anObject {
@@ -216,21 +211,19 @@ static NSString *const kHiddenCharacter = @"\u200B";
 }
 
 - (void)dealloc {
-    self.title = nil;
     self.tokenField = nil;
     
-    [super dealloc];
 }
 
 @end
 
 @interface APTokenField ()
 
-@property (nonatomic, retain) UIView *backingView;
-@property (nonatomic, retain) APShadowView *shadowView;
-@property (nonatomic, retain) APTextField *textField;
-@property (nonatomic, retain) UIView *tokenContainer;
-@property (nonatomic, retain) NSMutableArray *tokens;
+@property (nonatomic, strong) UIView *backingView;
+@property (nonatomic, strong) APShadowView *shadowView;
+@property (nonatomic, strong) APTextField *textField;
+@property (nonatomic, strong) UIView *tokenContainer;
+@property (nonatomic, strong) NSMutableArray *tokens;
 
 @end
 
@@ -257,16 +250,16 @@ static NSString *const kHiddenCharacter = @"\u200B";
     if (self) {
         self.autoresizingMask = UIViewAutoresizingFlexibleWidth;
         
-        self.backingView = [[[UIView alloc] initWithFrame:CGRectZero] autorelease];
+        self.backingView = [[UIView alloc] initWithFrame:CGRectZero];
         backingView.backgroundColor = [UIColor whiteColor];
         [self addSubview:backingView];
         
         numberOfResults = 0;
         self.font = [UIFont systemFontOfSize:14];
         
-        self.tokenContainer = [[[UIView alloc] initWithFrame:CGRectZero] autorelease];
+        self.tokenContainer = [[UIView alloc] initWithFrame:CGRectZero];
         tokenContainer.backgroundColor = [UIColor clearColor];
-        UITapGestureRecognizer *tapGesture = [[[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(userTappedTokenContainer)] autorelease];
+        UITapGestureRecognizer *tapGesture = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(userTappedTokenContainer)];
         [tokenContainer addGestureRecognizer:tapGesture];
         [self addSubview:tokenContainer];
         
@@ -275,10 +268,10 @@ static NSString *const kHiddenCharacter = @"\u200B";
         resultsTable.delegate = self;
         [self addSubview:resultsTable];
         
-        self.shadowView = [[[APShadowView alloc] initWithFrame:CGRectZero] autorelease];
+        self.shadowView = [[APShadowView alloc] initWithFrame:CGRectZero];
         [self addSubview:shadowView];
         
-        self.textField = [[[APTextField alloc] initWithFrame:CGRectZero] autorelease];
+        self.textField = [[APTextField alloc] initWithFrame:CGRectZero];
         textField.text = kHiddenCharacter;
         textField.delegate = self;
         textField.font = font;
@@ -288,7 +281,7 @@ static NSString *const kHiddenCharacter = @"\u200B";
             textField.spellCheckingType = UITextSpellCheckingTypeNo;
         [tokenContainer addSubview:textField];
         
-        self.tokens = [[[NSMutableArray alloc] init] autorelease];
+        self.tokens = [[NSMutableArray alloc] init];
         
         solidLine = [[APSolidLine alloc] initWithFrame:CGRectZero];
         [self addSubview:solidLine];
@@ -311,7 +304,7 @@ static NSString *const kHiddenCharacter = @"\u200B";
     
     APTokenView *token = [APTokenView tokenWithTitle:title object:object];
     token.tokenField = self;
-    UITapGestureRecognizer *tapGesture = [[[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(userTappedToken:)] autorelease];
+    UITapGestureRecognizer *tapGesture = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(userTappedToken:)];
     [token addGestureRecognizer:tapGesture];
     [tokens addObject:token];
     [tokenContainer addSubview:token];
@@ -555,7 +548,7 @@ static NSString *const kHiddenCharacter = @"\u200B";
         static NSString *CellIdentifier = @"CellIdentifier";
         UITableViewCell *cell = [aTableView dequeueReusableCellWithIdentifier:CellIdentifier];
         if (cell == nil)
-            cell = [[[UITableViewCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:CellIdentifier] autorelease];
+            cell = [[UITableViewCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:CellIdentifier];
         
         id object = [tokenFieldDataSource tokenField:self objectAtResultsIndex:indexPath.row];
         cell.textLabel.text = [tokenFieldDataSource tokenField:self titleForObject:object];
@@ -705,8 +698,7 @@ static NSString *const kHiddenCharacter = @"\u200B";
     if (font == aFont)
         return;
     
-    [font release];
-    font = [aFont retain];
+    font = aFont;
     
     textField.font = font;
 }
@@ -715,12 +707,10 @@ static NSString *const kHiddenCharacter = @"\u200B";
     if ([labelText isEqualToString:someText])
         return;
     
-    [labelText release];
-    labelText = [someText retain];
+    labelText = someText;
     
     // remove the current label
     [label removeFromSuperview];
-    [label release];
     label = nil;
     
     // if there is some new text, then create and add a new label
@@ -743,12 +733,11 @@ static NSString *const kHiddenCharacter = @"\u200B";
         return;
     
     [rightView removeFromSuperview];
-    [rightView release];
     rightView = nil;
     
     if (aView)
     {
-        rightView = [aView retain];
+        rightView = aView;
         [self addSubview:rightView];
     }
     
@@ -764,20 +753,5 @@ static NSString *const kHiddenCharacter = @"\u200B";
 
 #pragma mark - Memory Management
 
-- (void)dealloc {
-    [labelText release];
-    [label release];
-    self.font = nil;
-    self.shadowView = nil;
-    [resultsTable release];
-    [rightView release];
-    rightView = nil;
-    self.textField = nil;
-    self.tokenContainer = nil;
-    self.tokens = nil;
-    self.backingView = nil;
-    
-    [super dealloc];
-}
 
 @end

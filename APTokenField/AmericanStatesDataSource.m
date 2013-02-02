@@ -71,12 +71,6 @@
     return self;
 }
 
-- (void)dealloc {
-    [states release];
-    [results release];
-    
-    [super dealloc];
-}
 
 #pragma mark - APTokenFieldDataSource
 
