@@ -34,27 +34,29 @@
 @protocol APTokenFieldDataSource;
 @protocol APTokenFieldDelegate;
 @class APShadowView;
-@class APSolidLine;
-@class APTextField;
 #import <UIKit/UIKit.h>
 
-@interface APTokenField : UIControl <UITableViewDataSource, UITextFieldDelegate, UITableViewDelegate> {
-  id<APTokenFieldDataSource> __weak tokenFieldDataSource;
-  id<APTokenFieldDelegate> __weak tokenFieldDelegate;
-  APShadowView *shadowView;
-  APTextField *textField;
-  UIView *backingView;
-  UIView *tokenContainer;
-  NSMutableArray *tokens;
-  UIFont *font;
-  UITableView *resultsTable;
-  NSString *labelText;
+@interface APSolidLine : UIView
+
+@property (nonatomic) UIColor *color;
+
+@end
+
+@interface APTokenView : UIView
+
+@end
+
+@interface APTokenField : UIControl <UITableViewDataSource, UITextFieldDelegate, UITableViewDelegate>
+{
   UILabel *label;
   NSUInteger numberOfResults;
-  UIView *rightView;
-  APSolidLine *solidLine;
 }
 
+@property (nonatomic, strong) NSDictionary *tokenColors;
+@property (nonatomic) NSUInteger tokensLimit;
+@property (nonatomic, strong) NSMutableArray *tokens;
+@property (nonatomic, strong) UIView *backingView;
+@property (nonatomic) APSolidLine *solidLine;
 @property (nonatomic, strong) UIFont *font;
 @property (nonatomic, copy) NSString *labelText;
 @property (nonatomic, readonly) UITableView *resultsTable;
@@ -62,6 +64,7 @@
 @property (weak, nonatomic, readonly) NSString *text;
 @property (nonatomic, weak) id<APTokenFieldDataSource> tokenFieldDataSource;
 @property (nonatomic, weak) id<APTokenFieldDelegate> tokenFieldDelegate;
+
 - (void)addObject:(id)object;
 - (void)removeObject:(id)object;
 - (NSUInteger)objectCount;
@@ -69,23 +72,20 @@
 
 @end
 
-
 @protocol APTokenFieldDataSource <NSObject>
 
 @required
-- (NSString*)tokenField:(APTokenField*)tokenField titleForObject:(id)anObject;
-- (NSUInteger)numberOfResultsInTokenField:(APTokenField*)tokenField;
-- (id)tokenField:(APTokenField*)tokenField objectAtResultsIndex:(NSUInteger)index;
-- (void)tokenField:(APTokenField*)tokenField searchQuery:(NSString*)query;
+- (NSString *)tokenField:(APTokenField *)tokenField titleForObject:(id)anObject;
+- (NSUInteger)numberOfResultsInTokenField:(APTokenField *)tokenField;
+- (id)tokenField:(APTokenField *)tokenField objectAtResultsIndex:(NSUInteger)index;
+- (void)tokenField:(APTokenField *)tokenField searchQuery:(NSString*)query;
 
 @optional
 /* If you don't implement this method, then the results table will use
  UITableViewCellStyleDefault with the value provided by
  tokenField:titleForObject: as the textLabel of the UITableViewCell. */
-- (UITableViewCell*)tokenField:(APTokenField*)tokenField
-           tableView:(UITableView*)tableView
-          cellForIndex:(NSUInteger)index;
-- (CGFloat)resultRowsHeightForTokenField:(APTokenField*)tokenField;
+- (UITableViewCell *)tokenField:(APTokenField *)tokenField tableView:(UITableView *)tableView cellForIndex:(NSUInteger)index;
+- (CGFloat)resultRowsHeightForTokenField:(APTokenField *)tokenField;
 
 @end
 
@@ -94,12 +94,13 @@
 
 @optional
 /* Called when the user adds an object from the results list. */
-- (void)tokenField:(APTokenField*)tokenField didAddObject:(id)object;
+- (void)tokenField:(APTokenField *)tokenField didAddObject:(id)object;
 /* Called when the user deletes an object from the token field. */
-- (void)tokenField:(APTokenField*)tokenField didRemoveObject:(id)object;
-- (void)tokenFieldDidEndEditing:(APTokenField*)tokenField;
+- (void)tokenField:(APTokenField *)tokenField didRemoveObject:(id)object;
+- (void)tokenFieldDidBeginEditing:(APTokenField *)tokenField;
+- (void)tokenFieldDidEndEditing:(APTokenField *)tokenField;
 /* Called when the user taps the 'enter'. */
-- (void)tokenFieldDidReturn:(APTokenField*)tokenField;
-- (BOOL)tokenField:(APTokenField*)tokenField shouldChangeCharactersInRange:(NSRange)range replacementString:(NSString*)string;
+- (void)tokenFieldDidReturn:(APTokenField *)tokenField;
+- (BOOL)tokenField:(APTokenField *)tokenField shouldChangeCharactersInRange:(NSRange)range replacementString:(NSString *)string;
 
 @end
