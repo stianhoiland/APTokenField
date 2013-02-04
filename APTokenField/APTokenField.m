@@ -69,9 +69,8 @@ static NSString *const kHiddenCharacter = @"\u200B";
   if (self = [super initWithFrame:frame]) {
     self.userInteractionEnabled = NO;
     shadowLayer = [[CAGradientLayer alloc] init];
-    CGColorRef darkColor = [UIColor colorWithRed:0.0 green:0.0 blue:0.0 alpha:0.5].CGColor;
-    CGColorRef lightColor = [UIColor colorWithWhite:1 alpha:0].CGColor;
-    shadowLayer.colors = @[(__bridge id)darkColor, (__bridge id)lightColor];
+    shadowLayer.colors = @[(id)[UIColor colorWithRed:0.0 green:0.0 blue:0.0 alpha:0.5].CGColor,
+                           (id)[UIColor colorWithWhite:1 alpha:0].CGColor];
     [self.layer addSublayer:shadowLayer];
   }
   return self;
