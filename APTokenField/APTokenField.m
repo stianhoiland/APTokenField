@@ -36,6 +36,21 @@
 
 static NSString *const kHiddenCharacter = @"\u200B";
 
+@interface APTextField : UITextField {}
+@end
+
+@implementation APTextField
+
+- (BOOL)canPerformAction:(SEL)action withSender:(id)sender {
+  if ([self.text isEqualToString:kHiddenCharacter]) {
+    return (action == @selector(paste:)) ? YES : NO;
+  } else {
+    return [super canPerformAction:action withSender:sender];
+  }
+}
+
+@end
+
 @implementation APSolidLine
 
 - (void)drawRect:(CGRect)rect
@@ -225,7 +240,7 @@ static NSString *const kHiddenCharacter = @"\u200B";
 @interface APTokenField ()
 
 @property (nonatomic, strong) APShadowView *shadowView;
-@property (nonatomic, strong) UITextField *textField;
+@property (nonatomic, strong) APTextField *textField;
 @property (nonatomic, strong) UIView *tokenContainer;
 
 @end
@@ -263,12 +278,13 @@ static NSString *const kHiddenCharacter = @"\u200B";
     self.shadowView = [[APShadowView alloc] initWithFrame:CGRectZero];
     [self addSubview:_shadowView];
     
-    self.textField = [[UITextField alloc] initWithFrame:CGRectZero];
+    self.textField = [[APTextField alloc] initWithFrame:CGRectZero];
     _textField.text = kHiddenCharacter;
     _textField.delegate = self;
     _textField.font = _font;
     _textField.autocorrectionType = UITextAutocorrectionTypeNo;
     _textField.autocapitalizationType = UITextAutocapitalizationTypeNone;
+    _textField.returnKeyType = UIReturnKeyDone;
     if ([UITextField respondsToSelector:@selector(setSpellCheckingType:)])
       _textField.spellCheckingType = UITextSpellCheckingTypeNo;
     [_tokenContainer addSubview:_textField];
