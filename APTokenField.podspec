@@ -1,6 +1,6 @@
 Pod::Spec.new do |s|
   s.name         = "APTokenField"
-  s.version      = "0.0.3"
+  s.version      = "0.0.4"
   s.summary      = "A simple, lightweight, yet equally powerful version of Three20's TTPickerTextField."
   s.homepage     = "https://github.com/unteleported/APTokenField"
   s.license      = {
@@ -13,7 +13,7 @@ Pod::Spec.new do |s|
   }
 
   s.authors       = { "Arash Payan" => "arash.payan@gmail.com", "Olexandr Skrypnyk" => "sxua@unteleported.com" }
-  s.source       = { :git => "https://github.com/unteleported/APTokenField.git", :tag => "0.0.3" }
+  s.source       = { :git => "https://github.com/unteleported/APTokenField.git", :tag => "0.0.4" }
 
   s.platform     = :ios, '5.0'
   s.source_files = 'APTokenField/APTokenField.{h,m}'
