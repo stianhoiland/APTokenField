@@ -373,7 +373,7 @@ static NSString *const kHiddenCharacter = @"\u200B";
   return [_textField resignFirstResponder];
 }
 
-#define CONTAINER_PADDING      12
+#define CONTAINER_PADDING      8
 #define MINIMUM_TEXTFIELD_WIDTH   40
 #define CONTAINER_ELEMENT_VT_MARGIN 8
 #define CONTAINER_ELEMENT_HZ_MARGIN 8
@@ -447,9 +447,9 @@ static NSString *const kHiddenCharacter = @"\u200B";
   
   /* If there's a rightView, place it at the bottom right of the tokenContainer.
    We made sure to provide enough space for it in the logic above, so it should fit just right. */
-  _rightView.center = CGPointMake(bounds.size.width-CONTAINER_PADDING-_rightView.bounds.size.width/2.0,
-                   CGRectGetMaxY(_tokenContainer.frame)-5-_rightView.bounds.size.height/2.0/*CGRectGetHeight(tokenContainer.frame)-5-rightView.bounds.size.height/2.0*/);
-  
+  _rightView.center = CGPointMake(bounds.size.width - CONTAINER_PADDING/2.0 - _rightView.bounds.size.width/2.0,
+                   CGRectGetMaxY(_tokenContainer.frame)-5-_rightView.bounds.size.height/2.0);
+
   // the solid line should be 1 pt at the bottom of the token container
   _solidLine.frame = CGRectMake(0,
                  CGRectGetMaxY(_tokenContainer.frame)-1,
