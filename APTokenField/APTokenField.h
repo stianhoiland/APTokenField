@@ -1,6 +1,5 @@
 @protocol APTokenFieldDataSource;
 @protocol APTokenFieldDelegate;
-@class APShadowView;
 #import <UIKit/UIKit.h>
 
 @interface APSolidLine : UIView
@@ -9,9 +8,8 @@
 
 @end
 
-@interface APTokenView : UIView
-
-@end
+#define TOKEN_HZ_PADDING 8.5
+#define TOKEN_VT_PADDING 2.5
 
 @interface APTokenField : UIControl <UITableViewDataSource, UITextFieldDelegate, UITableViewDelegate>
 {
@@ -36,38 +34,5 @@
 - (void)removeObject:(id)object;
 - (NSUInteger)objectCount;
 - (id)objectAtIndex:(NSUInteger)index;
-
-@end
-
-@protocol APTokenFieldDataSource <NSObject>
-
-@required
-- (NSString *)tokenField:(APTokenField *)tokenField titleForObject:(id)anObject;
-- (NSUInteger)numberOfResultsInTokenField:(APTokenField *)tokenField;
-- (id)tokenField:(APTokenField *)tokenField objectAtResultsIndex:(NSUInteger)index;
-- (void)tokenField:(APTokenField *)tokenField searchQuery:(NSString*)query;
-
-@optional
-/* If you don't implement this method, then the results table will use
- UITableViewCellStyleDefault with the value provided by
- tokenField:titleForObject: as the textLabel of the UITableViewCell. */
-- (UITableViewCell *)tokenField:(APTokenField *)tokenField tableView:(UITableView *)tableView cellForIndex:(NSUInteger)index;
-- (CGFloat)resultRowsHeightForTokenField:(APTokenField *)tokenField;
-
-@end
-
-
-@protocol APTokenFieldDelegate <NSObject>
-
-@optional
-/* Called when the user adds an object from the results list. */
-- (void)tokenField:(APTokenField *)tokenField didAddObject:(id)object;
-/* Called when the user deletes an object from the token field. */
-- (void)tokenField:(APTokenField *)tokenField didRemoveObject:(id)object;
-- (void)tokenFieldDidBeginEditing:(APTokenField *)tokenField;
-- (void)tokenFieldDidEndEditing:(APTokenField *)tokenField;
-/* Called when the user taps the 'enter'. */
-- (void)tokenFieldDidReturn:(APTokenField *)tokenField;
-- (BOOL)tokenField:(APTokenField *)tokenField shouldChangeCharactersInRange:(NSRange)range replacementString:(NSString *)string;
 
 @end

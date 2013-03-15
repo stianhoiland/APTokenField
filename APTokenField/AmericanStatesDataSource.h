@@ -6,7 +6,7 @@
 //  Copyright (c) 2011 __MyCompanyName__. All rights reserved.
 //
 
-#import "APTokenField.h"
+#import "APTokenFieldDataSource.h"
 #import <Foundation/Foundation.h>
 
 @interface AmericanStatesDataSource : NSObject <APTokenFieldDataSource> {

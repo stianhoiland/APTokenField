@@ -18,6 +18,8 @@
 		5BE470F414A99C2D008836CE /* QuartzCore.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 5BE470F314A99C2D008836CE /* QuartzCore.framework */; };
 		5BE470F814A9BE8F008836CE /* APTokenFieldController.m in Sources */ = {isa = PBXBuildFile; fileRef = 5BE470F714A9BE8F008836CE /* APTokenFieldController.m */; };
 		5BE4710414ABB43A008836CE /* AmericanStatesDataSource.m in Sources */ = {isa = PBXBuildFile; fileRef = 5BE4710314ABB43A008836CE /* AmericanStatesDataSource.m */; };
+		809DD23016F50923000FCCD9 /* APShadowView.m in Sources */ = {isa = PBXBuildFile; fileRef = 809DD22D16F50922000FCCD9 /* APShadowView.m */; };
+		809DD23116F50923000FCCD9 /* APTokenView.m in Sources */ = {isa = PBXBuildFile; fileRef = 809DD22F16F50923000FCCD9 /* APTokenView.m */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -39,6 +41,12 @@
 		5BE470F714A9BE8F008836CE /* APTokenFieldController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = APTokenFieldController.m; sourceTree = "<group>"; };
 		5BE4710214ABB43A008836CE /* AmericanStatesDataSource.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = AmericanStatesDataSource.h; sourceTree = "<group>"; };
 		5BE4710314ABB43A008836CE /* AmericanStatesDataSource.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = AmericanStatesDataSource.m; sourceTree = "<group>"; };
+		809DD22C16F50922000FCCD9 /* APShadowView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = APShadowView.h; sourceTree = "<group>"; };
+		809DD22D16F50922000FCCD9 /* APShadowView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = APShadowView.m; sourceTree = "<group>"; };
+		809DD22E16F50923000FCCD9 /* APTokenView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = APTokenView.h; sourceTree = "<group>"; };
+		809DD22F16F50923000FCCD9 /* APTokenView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = APTokenView.m; sourceTree = "<group>"; };
+		809DD23216F5093F000FCCD9 /* APTokenFieldDataSource.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = APTokenFieldDataSource.h; sourceTree = "<group>"; };
+		80B507FB16F3E3C0001F2EB9 /* APTokenFieldDelegate.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = APTokenFieldDelegate.h; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -89,13 +97,19 @@
 			children = (
 				5B0D4A7C1497503B00A89219 /* AppDelegate.h */,
 				5B0D4A7D1497503B00A89219 /* AppDelegate.m */,
-				5B0D4A741497503B00A89219 /* Supporting Files */,
-				5B0D4A88149750C800A89219 /* APTokenField.h */,
-				5B0D4A89149750C800A89219 /* APTokenField.m */,
 				5BE470F614A9BE8F008836CE /* APTokenFieldController.h */,
 				5BE470F714A9BE8F008836CE /* APTokenFieldController.m */,
 				5BE4710214ABB43A008836CE /* AmericanStatesDataSource.h */,
 				5BE4710314ABB43A008836CE /* AmericanStatesDataSource.m */,
+				5B0D4A741497503B00A89219 /* Supporting Files */,
+				809DD23216F5093F000FCCD9 /* APTokenFieldDataSource.h */,
+				80B507FB16F3E3C0001F2EB9 /* APTokenFieldDelegate.h */,
+				5B0D4A88149750C800A89219 /* APTokenField.h */,
+				5B0D4A89149750C800A89219 /* APTokenField.m */,
+				809DD22E16F50923000FCCD9 /* APTokenView.h */,
+				809DD22F16F50923000FCCD9 /* APTokenView.m */,
+				809DD22C16F50922000FCCD9 /* APShadowView.h */,
+				809DD22D16F50922000FCCD9 /* APShadowView.m */,
 			);
 			path = APTokenField;
 			sourceTree = "<group>";
@@ -179,6 +193,8 @@
 				5B0D4A8A149750C800A89219 /* APTokenField.m in Sources */,
 				5BE470F814A9BE8F008836CE /* APTokenFieldController.m in Sources */,
 				5BE4710414ABB43A008836CE /* AmericanStatesDataSource.m in Sources */,
+				809DD23016F50923000FCCD9 /* APShadowView.m in Sources */,
+				809DD23116F50923000FCCD9 /* APTokenView.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
