@@ -1,11 +1,3 @@
-//
-//  AmericanStatesDataSource.m
-//  APTokenField
-//
-//  Created by Arash Payan on 12/28/11.
-//  Copyright (c) 2011 __MyCompanyName__. All rights reserved.
-//
-
 #import "AmericanStatesDataSource.h"
 
 @implementation AmericanStatesDataSource

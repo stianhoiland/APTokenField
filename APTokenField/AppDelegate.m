@@ -1,11 +1,3 @@
-//
-//  AppDelegate.m
-//  APTokenField
-//
-//  Created by Arash Payan on 12/13/11.
-//  Copyright (c) 2011 __MyCompanyName__. All rights reserved.
-//
-
 #import "AppDelegate.h"
 #import "APTokenFieldController.h"
 
