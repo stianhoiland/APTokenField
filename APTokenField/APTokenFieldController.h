@@ -11,9 +11,9 @@
 #import <UIKit/UIKit.h>
 
 @interface APTokenFieldController : UIViewController {
-  APTokenField *tokenField;
-  UIView *containerView;
-  AmericanStatesDataSource *statesDataSource;
+    APTokenField *tokenField;
+    UIView *containerView;
+    AmericanStatesDataSource *statesDataSource;
 }
 
 @end

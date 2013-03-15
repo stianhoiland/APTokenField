@@ -13,8 +13,8 @@
 
 @interface APTokenField : UIControl <UITableViewDataSource, UITextFieldDelegate, UITableViewDelegate>
 {
-  UILabel *label;
-  NSUInteger numberOfResults;
+    UILabel *label;
+    NSUInteger numberOfResults;
 }
 
 @property (nonatomic, strong) NSDictionary *tokenColors;
