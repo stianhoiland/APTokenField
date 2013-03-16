@@ -1,9 +1,8 @@
 #import "APTokenFieldDataSource.h"
-#import <Foundation/Foundation.h>
 
-@interface AmericanStatesDataSource : NSObject <APTokenFieldDataSource> {
-    NSMutableArray *states;
-    NSMutableArray *results;
-}
+@interface AmericanStatesDataSource : NSObject <APTokenFieldDataSource>
+
+@property (strong, nonatomic) NSMutableArray *states;
+@property (strong, nonatomic) NSMutableArray *results;
 
 @end
