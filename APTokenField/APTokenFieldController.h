@@ -1,11 +1,12 @@
-#import "APTokenField.h"
-#import "AmericanStatesDataSource.h"
-#import <UIKit/UIKit.h>
+#import "APTokenFieldDelegate.h"
 
-@interface APTokenFieldController : UIViewController {
-    APTokenField *tokenField;
-    UIView *containerView;
-    AmericanStatesDataSource *statesDataSource;
-}
+@class APTokenField;
+@class AmericanStatesDataSource;
+
+@interface APTokenFieldController : UIViewController <APTokenFieldDelegate>
+
+@property (strong, nonatomic) APTokenField *tokenField;
+@property (strong, nonatomic) UIView *containerView;
+@property (strong, nonatomic) AmericanStatesDataSource *statesDataSource;
 
 @end

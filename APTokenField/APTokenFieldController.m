@@ -1,49 +1,47 @@
 #import "APTokenFieldController.h"
 
+#import "APTokenField.h"
+#import "AmericanStatesDataSource.h"
+
 @implementation APTokenFieldController
 
-- (id)initWithNibName:(NSString *)nibNameOrNil bundle:(NSBundle *)nibBundleOrNil
-{
-    self = [super initWithNibName:nibNameOrNil bundle:nibBundleOrNil];
-    if (self) {
-        // Custom initialization
-        statesDataSource = [[AmericanStatesDataSource alloc] init];
-    }
-    return self;
-}
-
-#pragma mark - View lifecycle
-
-// Implement loadView to create a view hierarchy programmatically, without using a nib.
 - (void)loadView
 {
-    tokenField = [[APTokenField alloc] initWithFrame:CGRectMake(0, 0, 320, 460)];
-    tokenField.tokenFieldDataSource = statesDataSource;
-    tokenField.labelText = @"States:";
-    
-    self.view = tokenField;
+    self.view = self.tokenField;
+    self.tokenField.backgroundColor = [UIColor whiteColor];
 }
 
-/*
- // Implement viewDidLoad to do additional setup after loading the view, typically from a nib.
- - (void)viewDidLoad
- {
- [super viewDidLoad];
- }
- */
-
-- (void)viewDidUnload
+- (NSString *)title
 {
-    [super viewDidUnload];
-    // Release any retained subviews of the main view.
-    // e.g. self.myOutlet = nil;
+    return @"APTokenField";
+}
+
+- (APTokenField *)tokenField
+{
+    if (!_tokenField)
+    {
+        _tokenField = [[APTokenField alloc] initWithFrame:CGRectMake(0, 0, 320, 460)];
+        _tokenField.tokenFieldDataSource = self.statesDataSource;
+        _tokenField.tokenFieldDelegate = self;
+        _tokenField.labelText = @"States:";
+    }
+    
+    return _tokenField;
+}
+
+- (AmericanStatesDataSource *)statesDataSource
+{
+    if (!_statesDataSource)
+    {
+        _statesDataSource = [[AmericanStatesDataSource alloc] init];
+    }
+    
+    return _statesDataSource;
 }
 
 - (BOOL)shouldAutorotateToInterfaceOrientation:(UIInterfaceOrientation)interfaceOrientation
 {
-    // Return YES for supported orientations
 	return YES;
 }
-
 
 @end
