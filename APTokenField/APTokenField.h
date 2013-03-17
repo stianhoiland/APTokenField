@@ -5,9 +5,6 @@
 #define TOKEN_VT_PADDING 2.5
 
 @interface APTokenField : UIControl <UITableViewDataSource, UITextFieldDelegate, UITableViewDelegate>
-{
-    NSUInteger numberOfResults;
-}
 
 @property (nonatomic, strong) NSDictionary *tokenColors;
 @property (nonatomic) NSUInteger tokensLimit;
@@ -17,6 +14,7 @@
 @property (nonatomic, strong) UIFont *font;
 @property (nonatomic, copy) NSString *labelText;
 @property (nonatomic, readonly) UITableView *resultsTable;
+@property (nonatomic        ) NSUInteger numberOfResults;
 @property (nonatomic, strong) UIView *rightView;
 @property (weak, nonatomic, readonly) NSString *text;
 @property (nonatomic, weak) id<APTokenFieldDataSource> tokenFieldDataSource;

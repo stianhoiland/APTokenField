@@ -50,7 +50,7 @@ static NSString *const kHiddenCharacter = @"\u200B";
         _backingView.backgroundColor = [UIColor whiteColor];
         [self addSubview:_backingView];
         
-        numberOfResults = 0;
+        _numberOfResults = 0;
         self.font = [UIFont systemFontOfSize:14];
         
         _tokenContainer = [[UIView alloc] initWithFrame:CGRectZero];
@@ -224,7 +224,7 @@ static NSString *const kHiddenCharacter = @"\u200B";
         tokenContainerWidth = bounds.size.width-5-_rightView.bounds.size.width-5;
     else
         tokenContainerWidth = bounds.size.width;
-    if (numberOfResults == 0)
+    if (_numberOfResults == 0)
         _tokenContainer.frame = CGRectMake(0, 0, tokenContainerWidth, MAX(minContainerHeight, containerHeight+lastToken.bounds.size.height+CONTAINER_ELEMENT_VT_MARGIN));
     else
         _tokenContainer.frame = CGRectMake(0, -containerHeight+CONTAINER_ELEMENT_VT_MARGIN, tokenContainerWidth, MAX(minContainerHeight, containerHeight+lastToken.bounds.size.height+CONTAINER_ELEMENT_VT_MARGIN));
@@ -358,15 +358,15 @@ static NSString *const kHiddenCharacter = @"\u200B";
 }
 
 - (NSInteger)tableView:(UITableView*)aTableView numberOfRowsInSection:(NSInteger)section {
-    numberOfResults = 0;
+    _numberOfResults = 0;
     if (_tokenFieldDataSource != nil)
-        numberOfResults = [_tokenFieldDataSource numberOfResultsInTokenField:self];
+        _numberOfResults = [_tokenFieldDataSource numberOfResultsInTokenField:self];
     
-    _resultsTable.hidden = (numberOfResults == 0);
-    _shadowView.hidden = (numberOfResults == 0);
-    _solidLine.hidden = (numberOfResults != 0);
+    _resultsTable.hidden = (_numberOfResults == 0);
+    _shadowView.hidden = (_numberOfResults == 0);
+    _solidLine.hidden = (_numberOfResults != 0);
     
-    return numberOfResults;
+    return _numberOfResults;
 }
 
 #pragma mark - UITableViewDelegate
