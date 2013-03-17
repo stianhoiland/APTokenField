@@ -1,6 +1,5 @@
 @protocol APTokenFieldDataSource;
 @protocol APTokenFieldDelegate;
-#import <UIKit/UIKit.h>
 
 #define TOKEN_HZ_PADDING 8.5
 #define TOKEN_VT_PADDING 2.5
