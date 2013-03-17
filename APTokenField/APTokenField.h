@@ -13,7 +13,6 @@
 
 @interface APTokenField : UIControl <UITableViewDataSource, UITextFieldDelegate, UITableViewDelegate>
 {
-    UILabel *label;
     NSUInteger numberOfResults;
 }
 

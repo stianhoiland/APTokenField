@@ -48,6 +48,7 @@ static NSString *const kHiddenCharacter = @"\u200B";
 
 @property (nonatomic, strong) APShadowView *shadowView;
 @property (nonatomic, strong) APTextField *textField;
+@property (nonatomic, strong) UILabel *label;
 @property (nonatomic, strong) UIView *tokenContainer;
 
 @end
@@ -190,17 +191,17 @@ static NSString *const kHiddenCharacter = @"\u200B";
     
     // calculate the starting x (containerWidth) and y (containerHeight) for our layout
     float containerWidth = 0;
-    if (label != nil)   // we adjust the starting y in case the user specified labelText
+    if (_label != nil)   // we adjust the starting y in case the user specified labelText
     {
-        [label sizeToFit];
-        CGRect labelBounds = label.bounds;
+        [_label sizeToFit];
+        CGRect labelBounds = _label.bounds;
         // we want the base of the label text to be the same as the token label base
-        label.frame = CGRectMake(CONTAINER_PADDING,
+        _label.frame = CGRectMake(CONTAINER_PADDING,
                                  /* the +2 is because [label sizeToFit] isn't a tight fit (2 pixels of gap) */
-                                 CONTAINER_ELEMENT_VT_MARGIN+TOKEN_VT_PADDING+_font.lineHeight-label.font.lineHeight+2,
+                                 CONTAINER_ELEMENT_VT_MARGIN+TOKEN_VT_PADDING+_font.lineHeight-_label.font.lineHeight+2,
                                  labelBounds.size.width,
                                  labelBounds.size.height);
-        containerWidth = CGRectGetMaxX(label.frame)+CONTAINER_PADDING;
+        containerWidth = CGRectGetMaxX(_label.frame)+CONTAINER_PADDING;
     }
     else
         containerWidth = CONTAINER_PADDING;
@@ -538,19 +539,19 @@ static NSString *const kHiddenCharacter = @"\u200B";
     _labelText = someText;
     
     // remove the current label
-    [label removeFromSuperview];
-    label = nil;
+    [_label removeFromSuperview];
+    _label = nil;
     
     // if there is some new text, then create and add a new label
     if ([_labelText length] != 0)
     {
-        label = [[UILabel alloc] initWithFrame:CGRectZero];
+        _label = [[UILabel alloc] initWithFrame:CGRectZero];
         // the label's font is 15% bigger than the token font
-        label.font = [UIFont systemFontOfSize:_font.pointSize*1.15];
-        label.text = _labelText;
-        label.textColor = [UIColor grayColor];
-        label.backgroundColor = [UIColor clearColor];
-        [_tokenContainer addSubview:label];
+        _label.font = [UIFont systemFontOfSize:_font.pointSize*1.15];
+        _label.text = _labelText;
+        _label.textColor = [UIColor grayColor];
+        _label.backgroundColor = [UIColor clearColor];
+        [_tokenContainer addSubview:_label];
     }
     
     [self setNeedsLayout];
