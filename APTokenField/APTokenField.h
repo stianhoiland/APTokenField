@@ -2,12 +2,6 @@
 @protocol APTokenFieldDelegate;
 #import <UIKit/UIKit.h>
 
-@interface APSolidLine : UIView
-
-@property (nonatomic) UIColor *color;
-
-@end
-
 #define TOKEN_HZ_PADDING 8.5
 #define TOKEN_VT_PADDING 2.5
 
@@ -20,7 +14,7 @@
 @property (nonatomic) NSUInteger tokensLimit;
 @property (nonatomic, strong) NSMutableArray *tokens;
 @property (nonatomic, strong) UIView *backingView;
-@property (nonatomic) APSolidLine *solidLine;
+@property (nonatomic, strong) UIView *solidLine;
 @property (nonatomic, strong) UIFont *font;
 @property (nonatomic, copy) NSString *labelText;
 @property (nonatomic, readonly) UITableView *resultsTable;

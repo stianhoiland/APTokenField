@@ -24,25 +24,6 @@ static NSString *const kHiddenCharacter = @"\u200B";
 
 @end
 
-@implementation APSolidLine
-
-- (void)drawRect:(CGRect)rect
-{
-    CGFloat red = 204.0/255.0, green = 204.0/255.0, blue = 204.0/255.0, alpha = 1.0;
-    
-    if (_color != nil) {
-        [_color getRed:&red green:&green blue:&blue alpha:&alpha];
-    }
-    
-    CGContextRef ctx = UIGraphicsGetCurrentContext();
-    
-    CGFloat lineColor[4] = {red, green, blue, alpha};
-    CGContextSetFillColor(ctx, lineColor);
-    CGContextFillRect(ctx, rect);
-}
-
-@end
-
 
 @interface APTokenField ()
 
@@ -99,7 +80,8 @@ static NSString *const kHiddenCharacter = @"\u200B";
         
         self.tokens = [[NSMutableArray alloc] init];
         
-        _solidLine = [[APSolidLine alloc] initWithFrame:CGRectZero];
+        _solidLine = [[UIView alloc] initWithFrame:CGRectZero];
+        _solidLine.backgroundColor = [UIColor colorWithWhite:0.85 alpha:1.0];
         [self addSubview:_solidLine];
     }
     
