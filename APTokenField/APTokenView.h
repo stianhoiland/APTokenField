@@ -1,5 +1,3 @@
-#import <UIKit/UIKit.h>
-
 @class APTokenField;
 
 @interface APTokenView : UIView
