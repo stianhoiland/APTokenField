@@ -10,8 +10,8 @@
 @property (nonatomic) NSUInteger tokensLimit;
 @property (nonatomic, strong) NSMutableArray *tokens;
 
-- (APTokenView *)firstTokenWithObject:(id)object;       // returns first token with given object
-- (APTokenView *)firstTokenWithTitle:(NSString *)title; // returns first token with given title
+- (APTokenView *)tokenWithObject:(id)object;       // returns first token with given object
+- (APTokenView *)tokenWithTitle:(NSString *)title; // returns first token with given title
 - (APTokenView *)selectedToken;
 
 @property (nonatomic, readonly) UITableView *resultsTable;

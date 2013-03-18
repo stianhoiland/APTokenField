@@ -157,13 +157,13 @@ typedef BOOL (^TokenTestBlock)(APTokenView *token);
     return tokensPassingTest.count ? tokensPassingTest[0] : nil;
 }
 
-- (APTokenView *)firstTokenWithObject:(id)object {
+- (APTokenView *)tokenWithObject:(id)object {
     return [self firstTokenPassingTest:^BOOL(APTokenView *token) {
         return [token.object isEqual:object];
     }];
 }
 
-- (APTokenView *)firstTokenWithTitle:(NSString *)title {
+- (APTokenView *)tokenWithTitle:(NSString *)title {
     return [self firstTokenPassingTest:^BOOL(APTokenView *token) {
         return [token.title isEqualToString:title];
     }];
