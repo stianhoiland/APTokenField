@@ -14,4 +14,5 @@
 - (void)tokenFieldDidReturn:(APTokenField *)tokenField;
 - (BOOL)tokenField:(APTokenField *)tokenField shouldChangeCharactersInRange:(NSRange)range replacementString:(NSString *)string;
 
+- (void)tokenField:(APTokenField *)tokenField didTapToken:(APTokenView *)token;
 @end

@@ -357,6 +357,9 @@ typedef BOOL (^TokenTestBlock)(APTokenView *token);
     
     [self unselectAllTokens];
     [self selectToken:token];
+    
+    if ([_tokenFieldDelegate respondsToSelector:@selector(tokenField:didTapToken:)])
+        [_tokenFieldDelegate tokenField:self didTapToken:token];
 }
 
 #pragma mark - UITableViewDataSource
