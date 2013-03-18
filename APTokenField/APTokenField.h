@@ -6,17 +6,18 @@
 
 @interface APTokenField : UIControl <UITableViewDataSource, UITextFieldDelegate, UITableViewDelegate>
 
-@property (nonatomic, strong) NSDictionary *tokenColors;
 @property (nonatomic) NSUInteger tokensLimit;
 @property (nonatomic, strong) NSMutableArray *tokens;
-@property (nonatomic, strong) UIView *backingView;
-@property (nonatomic, strong) UIView *solidLine;
+
+@property (nonatomic, readonly) UITableView *resultsTable;
+@property (nonatomic) NSUInteger numberOfResults;
+
 @property (nonatomic, strong) UIFont *font;
 @property (nonatomic, copy) NSString *labelText;
-@property (nonatomic, readonly) UITableView *resultsTable;
-@property (nonatomic        ) NSUInteger numberOfResults;
+@property (nonatomic, weak, readonly) NSString *text;
+
 @property (nonatomic, strong) UIView *rightView;
-@property (weak, nonatomic, readonly) NSString *text;
+
 @property (nonatomic, weak) id<APTokenFieldDataSource> tokenFieldDataSource;
 @property (nonatomic, weak) id<APTokenFieldDelegate> tokenFieldDelegate;
 

@@ -31,6 +31,9 @@ static NSString *const kHiddenCharacter = @"\u200B";
 @property (nonatomic, strong) APTextField *textField;
 @property (nonatomic, strong) UILabel *label;
 @property (nonatomic, strong) UIView *tokenContainer;
+@property (nonatomic, strong) UIView *backingView;
+@property (nonatomic, strong) UIView *solidLine;
+@property (nonatomic, strong) NSDictionary *tokenColors;
 
 @end
 
