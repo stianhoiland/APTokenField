@@ -32,6 +32,8 @@ static NSString *const kHiddenCharacter = @"\u200B";
 @property (nonatomic, strong) UIView *solidLine;
 @property (nonatomic, strong) NSDictionary *tokenColors;
 
+typedef BOOL (^TokenTestBlock)(APTokenView *token);
+
 @end
 
 @implementation APTokenField
@@ -135,30 +137,43 @@ static NSString *const kHiddenCharacter = @"\u200B";
 
 #pragma mark - Finding tokens
 
-- (APTokenView *)tokenPassingTest:(BOOL (^)(APTokenView *token))test {
-    __block APTokenView *tokenPassingTest = nil;
+- (NSArray *)tokensPassingTest:(TokenTestBlock)test stopAfterFirstMatch:(BOOL)stopAfterFirstMatch {
+    __block NSMutableArray *tokensPassingTest = [NSMutableArray arrayWithCapacity:_tokens.count];
     
 	[_tokens enumerateObjectsUsingBlock:^(APTokenView *token, NSUInteger idx, BOOL *stop)
-    {
-		if (test(token))
-		{
-            tokenPassingTest = token;
-            *stop = YES;
-        }
-	}];
+     {
+         if (test(token))
+         {
+             [tokensPassingTest addObject:token];
+
+             if (stopAfterFirstMatch)
+                 *stop = YES;
+         }
+     }];
     
-    return tokenPassingTest;
+    return [tokensPassingTest copy];
+}
+
+- (APTokenView *)firstTokenPassingTest:(TokenTestBlock)test {
+    NSArray *tokensPassingTest = [self tokensPassingTest:test stopAfterFirstMatch:YES];
+    return tokensPassingTest.count ? tokensPassingTest[0] : nil;
 }
 
 - (APTokenView *)tokenWithObject:(id)object {
-    return [self tokenPassingTest:^BOOL(APTokenView *token) {
+    return [self firstTokenPassingTest: ^ BOOL(APTokenView *token) {
         return [token.object isEqual:object];
     }];
 }
 
 - (APTokenView *)tokenWithTitle:(NSString *)title {
-    return [self tokenPassingTest:^BOOL(APTokenView *token) {
+    return [self firstTokenPassingTest:^ BOOL (APTokenView *token) {
         return [token.title isEqualToString:title];
+    }];
+}
+
+- (APTokenView *)selectedToken {
+    return [self firstTokenPassingTest:^ BOOL (APTokenView *token) {
+        return token.highlighted;
     }];
 }
 

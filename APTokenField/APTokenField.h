@@ -12,6 +12,7 @@
 
 - (APTokenView *)tokenWithObject:(id)object;       // returns first token with given object
 - (APTokenView *)tokenWithTitle:(NSString *)title; // returns first token with given title
+- (APTokenView *)selectedToken;
 
 @property (nonatomic, readonly) UITableView *resultsTable;
 @property (nonatomic) NSUInteger numberOfResults;
