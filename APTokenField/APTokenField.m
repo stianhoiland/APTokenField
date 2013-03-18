@@ -63,6 +63,7 @@ typedef BOOL (^TokenTestBlock)(APTokenView *token);
         _resultsTable = [[UITableView alloc] initWithFrame:CGRectZero style:UITableViewStylePlain];
         _resultsTable.dataSource = self;
         _resultsTable.delegate = self;
+        _resultsTable.backgroundColor = [UIColor colorWithWhite:0.93f alpha:1.0f];
         [self addSubview:_resultsTable];
         
         self.shadowView = [[APShadowView alloc] initWithFrame:CGRectZero];
