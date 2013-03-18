@@ -127,12 +127,12 @@ typedef BOOL (^TokenTestBlock)(APTokenView *token);
     [self addToken:token];
 }
 
-- (void)removeTokenWithObject:(id)object {
-    [self removeToken:[self tokenWithObject:object]];
+- (void)removeFirstTokenWithObject:(id)object {
+    [self removeToken:[self firstTokenWithObject:object]];
 }
 
-- (void)removeTokenWithTitle:(NSString *)title {
-    [self removeToken:[self tokenWithTitle:title]];
+- (void)removeFirstTokenWithTitle:(NSString *)title {
+    [self removeToken:[self firstTokenWithTitle:title]];
 }
 
 #pragma mark - Finding tokens
@@ -159,13 +159,13 @@ typedef BOOL (^TokenTestBlock)(APTokenView *token);
     return tokensPassingTest.count ? tokensPassingTest[0] : nil;
 }
 
-- (APTokenView *)tokenWithObject:(id)object {
+- (APTokenView *)firstTokenWithObject:(id)object {
     return [self firstTokenPassingTest:^BOOL(APTokenView *token) {
         return [token.object isEqual:object];
     }];
 }
 
-- (APTokenView *)tokenWithTitle:(NSString *)title {
+- (APTokenView *)firstTokenWithTitle:(NSString *)title {
     return [self firstTokenPassingTest:^BOOL(APTokenView *token) {
         return [token.title isEqualToString:title];
     }];
@@ -307,7 +307,7 @@ typedef BOOL (^TokenTestBlock)(APTokenView *token);
         APTokenView *t = _tokens[i];
         if (t.highlighted)
         {
-            [self removeTokenWithObject:t.object];
+            [self removeFirstTokenWithObject:t.object];
             _textField.hidden = NO;
             return;
         }
@@ -458,7 +458,7 @@ typedef BOOL (^TokenTestBlock)(APTokenView *token);
             APTokenView *t = _tokens[i];
             if (t.highlighted)
             {
-                [self removeTokenWithObject:t.object];
+                [self removeFirstTokenWithObject:t.object];
                 break;
             }
         }
