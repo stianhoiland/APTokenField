@@ -95,12 +95,8 @@ static NSString *const kHiddenCharacter = @"\u200B";
     if (object == nil)
         [NSException raise:@"IllegalArgumentException" format:@"You can't add a nil object to an APTokenField"];
     
-    NSString *title = nil;
-    if (_tokenFieldDataSource != nil)
-        title = [_tokenFieldDataSource tokenField:self titleForObject:object];
-    
-    // if we still don't have a title for it, we'll use the Obj-c name
-    if (title == nil)
+    NSString *title = [_tokenFieldDataSource tokenField:self titleForObject:object];;
+    if (title == nil) // if we don't have a title for it, we'll use the Obj-c name
         title = [NSString stringWithFormat:@"%@", object];
     
     APTokenView *token = [APTokenView tokenWithTitle:title object:object colors:_tokenColors];
@@ -117,9 +113,6 @@ static NSString *const kHiddenCharacter = @"\u200B";
 }
 
 - (void)removeObject:(id)object {
-    if (object == nil)
-        return;
-    
     for (int i=0; i<[_tokens count]; i++)
     {
         APTokenView *t = _tokens[i];
@@ -362,8 +355,8 @@ static NSString *const kHiddenCharacter = @"\u200B";
 
 - (NSInteger)tableView:(UITableView*)aTableView numberOfRowsInSection:(NSInteger)section {
     _numberOfResults = 0;
-    if (_tokenFieldDataSource != nil)
-        _numberOfResults = [_tokenFieldDataSource numberOfResultsInTokenField:self];
+
+    _numberOfResults = [_tokenFieldDataSource numberOfResultsInTokenField:self];
     
     _resultsTable.hidden = (_numberOfResults == 0);
     _shadowView.hidden = (_numberOfResults == 0);
@@ -441,14 +434,11 @@ static NSString *const kHiddenCharacter = @"\u200B";
     else
         newString = [_textField.text stringByReplacingCharactersInRange:range withString:string];
     
-    if (_tokenFieldDataSource != nil)
-    {
-        [_tokenFieldDataSource tokenField:self searchQuery:newString];
-        [_resultsTable reloadData];
-        [UIView animateWithDuration:0.3 animations:^{
-            [self layoutSubviews];
-        }];
-    }
+    [_tokenFieldDataSource tokenField:self searchQuery:newString];
+    [_resultsTable reloadData];
+    [UIView animateWithDuration:0.3 animations:^{
+        [self layoutSubviews];
+    }];
     
     if ([newString length] == 0) {
         aTextField.text = kHiddenCharacter;
