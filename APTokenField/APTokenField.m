@@ -93,8 +93,9 @@ typedef BOOL (^TokenTestBlock)(APTokenView *token);
 
 - (void)addToken:(APTokenView *)token {
     token.tokenField = self;
-    UITapGestureRecognizer *tapGesture = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(userTappedToken:)];
-    [token addGestureRecognizer:tapGesture];
+    
+    [token addGestureRecognizer:[[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(userTappedToken:)]];
+
     [_tokens addObject:token];
     [_tokenContainer addSubview:token];
     
@@ -102,6 +103,11 @@ typedef BOOL (^TokenTestBlock)(APTokenView *token);
     _textField.text = kHiddenCharacter;
     
     [self setNeedsLayout];
+    
+    [_resultsTable reloadData];
+    
+    if ([_tokenFieldDelegate respondsToSelector:@selector(tokenField:didAddToken:)])
+        [_tokenFieldDelegate tokenField:self didAddToken:token];
 }
 
 - (void)removeToken:(APTokenView *)token {
@@ -125,14 +131,6 @@ typedef BOOL (^TokenTestBlock)(APTokenView *token);
     APTokenView *token = [APTokenView tokenWithTitle:title object:object colors:_tokenColors];
     
     [self addToken:token];
-}
-
-- (void)removeFirstTokenWithObject:(id)object {
-    [self removeToken:[self firstTokenWithObject:object]];
-}
-
-- (void)removeFirstTokenWithTitle:(NSString *)title {
-    [self removeToken:[self firstTokenWithTitle:title]];
 }
 
 #pragma mark - Finding tokens
@@ -330,7 +328,7 @@ typedef BOOL (^TokenTestBlock)(APTokenView *token);
         APTokenView *t = _tokens[i];
         if (t.highlighted)
         {
-            [self removeFirstTokenWithObject:t.object];
+            [self removeToken:t];
             _textField.hidden = NO;
             return;
         }
@@ -409,11 +407,6 @@ typedef BOOL (^TokenTestBlock)(APTokenView *token);
     // get the object for that result row
     id object = [_tokenFieldDataSource tokenField:self objectAtResultsIndex:indexPath.row];
     [self addTokenWithObject:object];
-    
-    [_resultsTable reloadData];
-    
-    if ([_tokenFieldDelegate respondsToSelector:@selector(tokenField:didAddToken:)])
-        [_tokenFieldDelegate tokenField:self didAddToken:object];
 }
 
 - (CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath {
@@ -453,7 +446,7 @@ typedef BOOL (^TokenTestBlock)(APTokenView *token);
             APTokenView *t = _tokens[i];
             if (t.highlighted)
             {
-                [self removeFirstTokenWithObject:t.object];
+                [self removeToken:t];
                 break;
             }
         }
