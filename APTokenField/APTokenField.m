@@ -9,10 +9,7 @@
 
 static NSString *const kHiddenCharacter = @"\u200B";
 
-@interface APTextField : UITextField {}
-@end
-
-@implementation APTextField
+@implementation UITextField (PreventCopy)
 
 - (BOOL)canPerformAction:(SEL)action withSender:(id)sender {
     if ([self.text isEqualToString:kHiddenCharacter]) {
@@ -28,7 +25,7 @@ static NSString *const kHiddenCharacter = @"\u200B";
 @interface APTokenField ()
 
 @property (nonatomic, strong) APShadowView *shadowView;
-@property (nonatomic, strong) APTextField *textField;
+@property (nonatomic, strong) UITextField *textField;
 @property (nonatomic, strong) UILabel *label;
 @property (nonatomic, strong) UIView *tokenContainer;
 @property (nonatomic, strong) UIView *backingView;
@@ -70,7 +67,7 @@ static NSString *const kHiddenCharacter = @"\u200B";
         self.shadowView = [[APShadowView alloc] initWithFrame:CGRectZero];
         [self addSubview:_shadowView];
         
-        self.textField = [[APTextField alloc] initWithFrame:CGRectZero];
+        self.textField = [[UITextField alloc] initWithFrame:CGRectZero];
         _textField.text = kHiddenCharacter;
         _textField.delegate = self;
         _textField.font = _font;
