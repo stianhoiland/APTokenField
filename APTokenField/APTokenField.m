@@ -92,19 +92,6 @@ typedef BOOL (^TokenTestBlock)(APTokenView *token);
 
 #pragma mark - Adding & removing tokens
 
-- (void)addTokenWithObject:(id)object {
-    if (object == nil)
-        [NSException raise:@"IllegalArgumentException" format:@"You can't add a nil object to an APTokenField"];
-    
-    NSString *title = [_tokenFieldDataSource tokenField:self titleForObject:object];;
-    if (title == nil) // if we don't have a title for it, we'll use the Obj-c name
-        title = [NSString stringWithFormat:@"%@", object];
-    
-    APTokenView *token = [APTokenView tokenWithTitle:title object:object colors:_tokenColors];
-    
-    [self addToken:token];
-}
-
 - (void)addToken:(APTokenView *)token {
     token.tokenField = self;
     UITapGestureRecognizer *tapGesture = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(userTappedToken:)];
@@ -118,14 +105,6 @@ typedef BOOL (^TokenTestBlock)(APTokenView *token);
     [self setNeedsLayout];
 }
 
-- (void)removeTokenWithObject:(id)object {
-    [self removeToken:[self tokenWithObject:object]];
-}
-
-- (void)removeTokenWithTitle:(NSString *)title {
-    [self removeToken:[self tokenWithTitle:title]];
-}
-
 - (void)removeToken:(APTokenView *)token {
     [token removeFromSuperview];
     [_tokens removeObject:token];;
@@ -133,6 +112,28 @@ typedef BOOL (^TokenTestBlock)(APTokenView *token);
     
     if ([_tokenFieldDelegate respondsToSelector:@selector(tokenField:didRemoveToken:)])
         [_tokenFieldDelegate tokenField:self didRemoveToken:token];
+}
+
+
+- (void)addTokenWithObject:(id)object {
+    if (object == nil)
+        [NSException raise:@"IllegalArgumentException" format:@"You can't add a nil object to an APTokenField"];
+    
+    NSString *title = [_tokenFieldDataSource tokenField:self titleForObject:object];;
+    if (title == nil) // if we don't have a title for it, we'll use the Obj-c name
+        title = [NSString stringWithFormat:@"%@", object];
+    
+    APTokenView *token = [APTokenView tokenWithTitle:title object:object colors:_tokenColors];
+    
+    [self addToken:token];
+}
+
+- (void)removeTokenWithObject:(id)object {
+    [self removeToken:[self tokenWithObject:object]];
+}
+
+- (void)removeTokenWithTitle:(NSString *)title {
+    [self removeToken:[self tokenWithTitle:title]];
 }
 
 #pragma mark - Finding tokens
