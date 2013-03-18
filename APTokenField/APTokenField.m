@@ -38,8 +38,7 @@ typedef BOOL (^TokenTestBlock)(APTokenView *token);
 
 @implementation APTokenField
 
-- (id)init
-{
+- (id)init {
     return [self initWithFrame:CGRectZero];
 }
 
@@ -146,7 +145,7 @@ typedef BOOL (^TokenTestBlock)(APTokenView *token);
          if (test(token))
          {
              [tokensPassingTest addObject:token];
-
+             
              if (stopAfterFirstMatch)
                  *stop = YES;
          }
@@ -161,19 +160,19 @@ typedef BOOL (^TokenTestBlock)(APTokenView *token);
 }
 
 - (APTokenView *)tokenWithObject:(id)object {
-    return [self firstTokenPassingTest: ^ BOOL(APTokenView *token) {
+    return [self firstTokenPassingTest:^BOOL(APTokenView *token) {
         return [token.object isEqual:object];
     }];
 }
 
 - (APTokenView *)tokenWithTitle:(NSString *)title {
-    return [self firstTokenPassingTest:^ BOOL (APTokenView *token) {
+    return [self firstTokenPassingTest:^BOOL(APTokenView *token) {
         return [token.title isEqualToString:title];
     }];
 }
 
 - (APTokenView *)selectedToken {
-    return [self firstTokenPassingTest:^ BOOL (APTokenView *token) {
+    return [self firstTokenPassingTest:^BOOL(APTokenView *token) {
         return token.highlighted;
     }];
 }
@@ -216,10 +215,10 @@ typedef BOOL (^TokenTestBlock)(APTokenView *token);
         CGRect labelBounds = _label.bounds;
         // we want the base of the label text to be the same as the token label base
         _label.frame = CGRectMake(CONTAINER_PADDING,
-                                 /* the +2 is because [label sizeToFit] isn't a tight fit (2 pixels of gap) */
-                                 CONTAINER_ELEMENT_VT_MARGIN+TOKEN_VT_PADDING+_font.lineHeight-_label.font.lineHeight+2,
-                                 labelBounds.size.width,
-                                 labelBounds.size.height);
+                                  /* the +2 is because [label sizeToFit] isn't a tight fit (2 pixels of gap) */
+                                  CONTAINER_ELEMENT_VT_MARGIN+TOKEN_VT_PADDING+_font.lineHeight-_label.font.lineHeight+2,
+                                  labelBounds.size.width,
+                                  labelBounds.size.height);
         containerWidth = CGRectGetMaxX(_label.frame)+CONTAINER_PADDING;
     }
     else
@@ -346,8 +345,7 @@ typedef BOOL (^TokenTestBlock)(APTokenView *token);
     }
 }
 
-- (void)userTappedToken:(UITapGestureRecognizer*)gestureRecognizer
-{
+- (void)userTappedToken:(UITapGestureRecognizer*)gestureRecognizer {
     if (!self.enabled)
         return;
     
@@ -398,7 +396,7 @@ typedef BOOL (^TokenTestBlock)(APTokenView *token);
 
 - (NSInteger)tableView:(UITableView*)aTableView numberOfRowsInSection:(NSInteger)section {
     _numberOfResults = 0;
-
+    
     _numberOfResults = [_tokenFieldDataSource numberOfResultsInTokenField:self];
     
     _resultsTable.hidden = (_numberOfResults == 0);
