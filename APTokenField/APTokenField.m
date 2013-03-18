@@ -177,6 +177,29 @@ typedef BOOL (^TokenTestBlock)(APTokenView *token);
     }];
 }
 
+- (NSArray *)selectedTokens {
+    return [self tokensPassingTest:^BOOL(APTokenView *token) {
+        return token.highlighted;
+    } stopAfterFirstMatch:NO];
+}
+
+#pragma mark - Manipulating tokens
+
+- (void)selectToken:(APTokenView *)token {
+    token.highlighted = YES;
+    
+    if (!_textField.isFirstResponder)
+        [_textField becomeFirstResponder];
+    
+    _textField.hidden = YES;
+}
+
+- (void)unselectAllTokens {
+    [[self selectedTokens] enumerateObjectsUsingBlock:^(APTokenView *token, NSUInteger index, BOOL *stop) {
+        token.highlighted = NO;
+    }];
+}
+
 #pragma mark - UIResponder
 
 - (BOOL)canBecomeFirstResponder {
@@ -316,10 +339,7 @@ typedef BOOL (^TokenTestBlock)(APTokenView *token);
     // there was no highlighted token, so highlight the last token in the list
     if ([_tokens count] > 0) // if there are any tokens in the list
     {
-        APTokenView *t = [_tokens lastObject];
-        t.highlighted = YES;
-        _textField.hidden = YES;
-        [t setNeedsDisplay];
+        [self selectToken:[_tokens lastObject]];
     }
 }
 
@@ -333,16 +353,7 @@ typedef BOOL (^TokenTestBlock)(APTokenView *token);
     if (_textField.hidden)
         _textField.hidden = NO;
     
-    // if there is a highlighted token, turn it off
-    for (APTokenView *t in _tokens)
-    {
-        if (t.highlighted)
-        {
-            t.highlighted = NO;
-            [t setNeedsDisplay];
-            break;
-        }
-    }
+    [self unselectAllTokens];
 }
 
 - (void)userTappedToken:(UITapGestureRecognizer*)gestureRecognizer {
@@ -352,24 +363,8 @@ typedef BOOL (^TokenTestBlock)(APTokenView *token);
     _textField.enabled = YES;
     APTokenView *token = (APTokenView*)gestureRecognizer.view;
     
-    // if any other token is highlighted, remove the highlight
-    for (APTokenView *t in _tokens)
-    {
-        if (t.highlighted)
-        {
-            t.highlighted = NO;
-            [t setNeedsDisplay];
-            break;
-        }
-    }
-    
-    // now highlight the tapped token
-    token.highlighted = YES;
-    [token setNeedsDisplay];
-    
-    // make sure the textfield is hidden
-    [_textField becomeFirstResponder];
-    _textField.hidden = YES;
+    [self unselectAllTokens];
+    [self selectToken:token];
 }
 
 #pragma mark - UITableViewDataSource
@@ -509,12 +504,9 @@ typedef BOOL (^TokenTestBlock)(APTokenView *token);
     if ([_tokens count] >= _tokensLimit) {
         _textField.enabled = NO;
     }
-    if ([_tokens count] > 0) {
-        for (APTokenView *t in _tokens) {
-            t.highlighted = NO;
-            [t setNeedsDisplay];
-        }
-    }
+    
+    [self unselectAllTokens];
+    
     if ([_tokenFieldDelegate respondsToSelector:@selector(tokenFieldDidEndEditing:)])
         [_tokenFieldDelegate tokenFieldDidEndEditing:self];
 }

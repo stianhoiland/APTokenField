@@ -121,4 +121,10 @@
     return titleSize;
 }
 
+- (void)setHighlighted:(BOOL)highlighted
+{
+    _highlighted = highlighted;
+    [self setNeedsDisplay];
+}
+
 @end
