@@ -1,3 +1,4 @@
+@class APTokenView;
 @protocol APTokenFieldDataSource;
 @protocol APTokenFieldDelegate;
 
@@ -8,6 +9,9 @@
 
 @property (nonatomic) NSUInteger tokensLimit;
 @property (nonatomic, strong) NSMutableArray *tokens;
+
+- (APTokenView *)tokenWithObject:(id)object;       // returns first token with given object
+- (APTokenView *)tokenWithTitle:(NSString *)title; // returns first token with given title
 
 @property (nonatomic, readonly) UITableView *resultsTable;
 @property (nonatomic) NSUInteger numberOfResults;
@@ -21,9 +25,7 @@
 @property (nonatomic, weak) id<APTokenFieldDataSource> tokenFieldDataSource;
 @property (nonatomic, weak) id<APTokenFieldDelegate> tokenFieldDelegate;
 
-- (void)addObject:(id)object;
-- (void)removeObject:(id)object;
-- (NSUInteger)objectCount;
-- (id)objectAtIndex:(NSUInteger)index;
+- (void)addToken:(APTokenView *)token;
+- (void)removeToken:(APTokenView *)token;
 
 @end

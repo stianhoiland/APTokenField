@@ -91,7 +91,9 @@ static NSString *const kHiddenCharacter = @"\u200B";
     return self;
 }
 
-- (void)addObject:(id)object {
+#pragma mark - Adding & removing tokens
+
+- (void)addTokenWithObject:(id)object {
     if (object == nil)
         [NSException raise:@"IllegalArgumentException" format:@"You can't add a nil object to an APTokenField"];
     
@@ -100,6 +102,11 @@ static NSString *const kHiddenCharacter = @"\u200B";
         title = [NSString stringWithFormat:@"%@", object];
     
     APTokenView *token = [APTokenView tokenWithTitle:title object:object colors:_tokenColors];
+    
+    [self addToken:token];
+}
+
+- (void)addToken:(APTokenView *)token {
     token.tokenField = self;
     UITapGestureRecognizer *tapGesture = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(userTappedToken:)];
     [token addGestureRecognizer:tapGesture];
@@ -112,32 +119,53 @@ static NSString *const kHiddenCharacter = @"\u200B";
     [self setNeedsLayout];
 }
 
-- (void)removeObject:(id)object {
-    for (int i=0; i<[_tokens count]; i++)
+- (void)removeTokenWithObject:(id)object {
+    [self removeToken:[self tokenWithObject:object]];
+}
+
+- (void)removeTokenWithTitle:(NSString *)title {
+    [self removeToken:[self tokenWithTitle:title]];
+}
+
+- (void)removeToken:(APTokenView *)token {
+    [token removeFromSuperview];
+    [_tokens removeObject:token];;
+    [self setNeedsLayout];
+    
+    if ([_tokenFieldDelegate respondsToSelector:@selector(tokenField:didRemoveToken:)])
+        [_tokenFieldDelegate tokenField:self didRemoveToken:token];
+}
+
+#pragma mark - Finding tokens
+
+- (APTokenView *)tokenPassingTest:(BOOL (^)(APTokenView *token))test {
+    __block APTokenView *tokenPassingTest = nil;
+    
+	[_tokens enumerateObjectsUsingBlock:^(APTokenView *token, NSUInteger idx, BOOL *stop)
     {
-        APTokenView *t = _tokens[i];
-        if ([t.object  isEqual:object])
-        {
-            [t removeFromSuperview];
-            [_tokens removeObjectAtIndex:i];
-            [self setNeedsLayout];
-            
-            if ([_tokenFieldDelegate respondsToSelector:@selector(tokenField:didRemoveObject:)])
-                [_tokenFieldDelegate tokenField:self didRemoveObject:object];
-            
-            return;
+		if (test(token))
+		{
+            tokenPassingTest = token;
+            *stop = YES;
         }
-    }
+	}];
+    
+    return tokenPassingTest;
 }
 
-- (NSUInteger)objectCount {
-    return [_tokens count];
+- (APTokenView *)tokenWithObject:(id)object {
+    return [self tokenPassingTest:^BOOL(APTokenView *token) {
+        return [token.object isEqual:object];
+    }];
 }
 
-- (id)objectAtIndex:(NSUInteger)index {
-    APTokenView *t = _tokens[index];
-    return t.object;
+- (APTokenView *)tokenWithTitle:(NSString *)title {
+    return [self tokenPassingTest:^BOOL(APTokenView *token) {
+        return [token.title isEqualToString:title];
+    }];
 }
+
+#pragma mark - UIResponder
 
 - (BOOL)canBecomeFirstResponder {
     return YES;
@@ -255,6 +283,8 @@ static NSString *const kHiddenCharacter = @"\u200B";
                                      CGRectGetMaxY(bounds)-CGRectGetMaxY(_tokenContainer.frame));
 }
 
+#pragma mark - Interaction
+
 - (void)userTappedBackspaceOnEmptyField {
     if (!self.enabled)
         return;
@@ -265,7 +295,7 @@ static NSString *const kHiddenCharacter = @"\u200B";
         APTokenView *t = _tokens[i];
         if (t.highlighted)
         {
-            [self removeObject:t.object];
+            [self removeTokenWithObject:t.object];
             _textField.hidden = NO;
             return;
         }
@@ -372,12 +402,12 @@ static NSString *const kHiddenCharacter = @"\u200B";
     
     // get the object for that result row
     id object = [_tokenFieldDataSource tokenField:self objectAtResultsIndex:indexPath.row];
-    [self addObject:object];
+    [self addTokenWithObject:object];
     
     [_resultsTable reloadData];
     
-    if ([_tokenFieldDelegate respondsToSelector:@selector(tokenField:didAddObject:)])
-        [_tokenFieldDelegate tokenField:self didAddObject:object];
+    if ([_tokenFieldDelegate respondsToSelector:@selector(tokenField:didAddToken:)])
+        [_tokenFieldDelegate tokenField:self didAddToken:object];
 }
 
 - (CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath {
@@ -417,7 +447,7 @@ static NSString *const kHiddenCharacter = @"\u200B";
             APTokenView *t = _tokens[i];
             if (t.highlighted)
             {
-                [self removeObject:t.object];
+                [self removeTokenWithObject:t.object];
                 break;
             }
         }

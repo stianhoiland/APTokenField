@@ -1,11 +1,12 @@
 @class APTokenField;
+@class APTokenView;
 
 @protocol APTokenFieldDelegate <NSObject>
 
 @optional
 
-- (void)tokenField:(APTokenField *)tokenField didAddObject:(id)object;
-- (void)tokenField:(APTokenField *)tokenField didRemoveObject:(id)object;
+- (void)tokenField:(APTokenField *)tokenField didAddToken:(APTokenView *)token;
+- (void)tokenField:(APTokenField *)tokenField didRemoveToken:(APTokenView *)token;
 
 - (void)tokenFieldDidBeginEditing:(APTokenField *)tokenField;
 - (void)tokenFieldDidEndEditing:(APTokenField *)tokenField;
