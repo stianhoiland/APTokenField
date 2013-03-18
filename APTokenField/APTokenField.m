@@ -184,6 +184,27 @@ typedef BOOL (^TokenTestBlock)(APTokenView *token);
 
 #pragma mark - Manipulating tokens
 
+- (void)flashToken:(APTokenView *)token {
+    [UIView transitionWithView:token
+                      duration:0.20
+                       options:UIViewAnimationOptionTransitionCrossDissolve
+                    animations:^{
+                        
+                        token.highlighted = YES;
+                    }
+                    completion:^(BOOL finished){
+                        
+                        [UIView transitionWithView:token
+                                          duration:0.20
+                                           options:UIViewAnimationOptionTransitionCrossDissolve
+                                        animations:^{
+                                            
+                                            token.highlighted = NO;
+                                        }
+                                        completion:nil];
+                    }];
+}
+
 - (void)selectToken:(APTokenView *)token {
     token.highlighted = YES;
     

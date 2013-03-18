@@ -28,5 +28,6 @@
 
 - (void)addToken:(APTokenView *)token;
 - (void)removeToken:(APTokenView *)token;
+- (void)flashToken:(APTokenView *)token;
 
 @end
