@@ -321,21 +321,15 @@ typedef BOOL (^TokenTestBlock)(APTokenView *token);
 - (void)userTappedBackspaceOnEmptyField {
     if (!self.enabled)
         return;
-    
+
     // check if there are any highlighted tokens. If so, delete it and reveal the textfield again
-    for (int i=0; i<[_tokens count]; i++)
+    if ([self selectedToken])
     {
-        APTokenView *t = _tokens[i];
-        if (t.highlighted)
-        {
-            [self removeToken:t];
-            _textField.hidden = NO;
-            return;
-        }
+        [self removeToken:[self selectedToken]];
+        _textField.hidden = NO;
     }
-    
     // there was no highlighted token, so highlight the last token in the list
-    if ([_tokens count] > 0) // if there are any tokens in the list
+    else if ([_tokens count] > 0) // if there are any tokens in the list
     {
         [self selectToken:[_tokens lastObject]];
     }
@@ -440,17 +434,12 @@ typedef BOOL (^TokenTestBlock)(APTokenView *token);
      entered a character, then we need to delete that token and begin a new search. */
     if (_textField.hidden)
     {
-        // find the highlighted token, remove it, then make the textfield visible again
-        for (int i=0; i<[_tokens count]; i++)
+        if ([self selectedToken])
         {
-            APTokenView *t = _tokens[i];
-            if (t.highlighted)
-            {
-                [self removeToken:t];
-                break;
-            }
+            // find the highlighted token, remove it, then make the textfield visible again
+            [self removeToken:[self selectedToken]];
+            _textField.hidden = NO;
         }
-        _textField.hidden = NO;
     }
     
     NSString *newString = nil;
