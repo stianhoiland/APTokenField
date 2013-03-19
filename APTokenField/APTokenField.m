@@ -53,6 +53,7 @@ typedef BOOL (^TokenTestBlock)(APTokenView *token);
         
         _numberOfResults = 0;
         _allowDuplicates = YES;
+        _tokensLimit = NSUIntegerMax;
         self.font = [UIFont systemFontOfSize:14];
         
         _tokenContainer = [[UIView alloc] initWithFrame:CGRectZero];
