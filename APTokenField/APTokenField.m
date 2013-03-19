@@ -103,11 +103,11 @@ typedef BOOL (^TokenTestBlock)(APTokenView *token);
             return;
         }
     }
-
+    
     token.tokenField = self;
     
     [token addGestureRecognizer:[[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(userTappedToken:)]];
-
+    
     [_tokens addObject:token];
     [_tokenContainer addSubview:token];
     
@@ -221,10 +221,10 @@ typedef BOOL (^TokenTestBlock)(APTokenView *token);
     
     if (!_textField.hidden)
         _textField.hidden = YES; // Hide the caret of textField
-
+    
     if (!self.isFirstResponder)
         [self becomeFirstResponder];
-
+    
     token.highlighted = YES;
 }
 
@@ -367,7 +367,7 @@ typedef BOOL (^TokenTestBlock)(APTokenView *token);
 - (void)userTappedBackspaceOnEmptyField {
     if (!self.enabled)
         return;
-
+    
     // check if there are any highlighted tokens. If so, delete it and reveal the textfield again
     if ([self selectedToken])
     {
