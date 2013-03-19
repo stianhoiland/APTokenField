@@ -217,18 +217,31 @@ typedef BOOL (^TokenTestBlock)(APTokenView *token);
 }
 
 - (void)selectToken:(APTokenView *)token {
+    [self unselectAllTokens];
+    
+    if (!_textField.hidden)
+        _textField.hidden = YES; // Hide the caret of textField
+
+    if (!self.isFirstResponder)
+        [self becomeFirstResponder];
+
     token.highlighted = YES;
-    
-    if (!_textField.isFirstResponder)
-        [_textField becomeFirstResponder];
-    
-    _textField.hidden = YES;
 }
 
 - (void)unselectAllTokens {
     [[self selectedTokens] enumerateObjectsUsingBlock:^(APTokenView *token, NSUInteger index, BOOL *stop) {
         token.highlighted = NO;
     }];
+}
+
+- (void)activateTextField {
+    [self unselectAllTokens];
+    
+    if (_textField.hidden)
+        _textField.hidden = NO;
+    
+    if (!self.isFirstResponder)
+        [self becomeFirstResponder];
 }
 
 #pragma mark - UIResponder
@@ -359,7 +372,7 @@ typedef BOOL (^TokenTestBlock)(APTokenView *token);
     if ([self selectedToken])
     {
         [self removeToken:[self selectedToken]];
-        _textField.hidden = NO;
+        [self activateTextField];
     }
     // there was no highlighted token, so highlight the last token in the list
     else if ([_tokens count] > 0) // if there are any tokens in the list
@@ -372,13 +385,7 @@ typedef BOOL (^TokenTestBlock)(APTokenView *token);
     if (!self.enabled)
         return;
     
-    if (![self isFirstResponder])
-        [self becomeFirstResponder];
-    
-    if (_textField.hidden)
-        _textField.hidden = NO;
-    
-    [self unselectAllTokens];
+    [self activateTextField];
 }
 
 - (void)userTappedToken:(UITapGestureRecognizer*)gestureRecognizer {
@@ -388,7 +395,6 @@ typedef BOOL (^TokenTestBlock)(APTokenView *token);
     _textField.enabled = YES;
     APTokenView *token = (APTokenView*)gestureRecognizer.view;
     
-    [self unselectAllTokens];
     [self selectToken:token];
     
     if ([_tokenFieldDelegate respondsToSelector:@selector(tokenField:didTapToken:)])
@@ -474,7 +480,7 @@ typedef BOOL (^TokenTestBlock)(APTokenView *token);
         {
             // find the highlighted token, remove it, then make the textfield visible again
             [self removeToken:[self selectedToken]];
-            _textField.hidden = NO;
+            [self activateTextField];
         }
     }
     
