@@ -8,6 +8,7 @@
 @interface APTokenField : UIControl <UITableViewDataSource, UITextFieldDelegate, UITableViewDelegate>
 
 @property (nonatomic) NSUInteger tokensLimit;
+@property (nonatomic) BOOL allowDuplicates; // dis/allow tokens with identical title string. Default is YES
 @property (nonatomic, strong) NSMutableArray *tokens;
 
 - (APTokenView *)tokenWithObject:(id)object;       // returns first token with given object

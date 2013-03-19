@@ -23,6 +23,7 @@
         _tokenField = [[APTokenField alloc] initWithFrame:CGRectMake(0, 0, 320, 460)];
         _tokenField.tokenFieldDataSource = self.statesDataSource;
         _tokenField.tokenFieldDelegate = self;
+        _tokenField.allowDuplicates = NO;
         _tokenField.labelText = @"States:";
     }
     

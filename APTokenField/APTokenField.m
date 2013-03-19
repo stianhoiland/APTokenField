@@ -52,6 +52,7 @@ typedef BOOL (^TokenTestBlock)(APTokenView *token);
         [self addSubview:_backingView];
         
         _numberOfResults = 0;
+        _allowDuplicates = YES;
         self.font = [UIFont systemFontOfSize:14];
         
         _tokenContainer = [[UIView alloc] initWithFrame:CGRectZero];
@@ -93,6 +94,16 @@ typedef BOOL (^TokenTestBlock)(APTokenView *token);
 #pragma mark - Adding & removing tokens
 
 - (void)addToken:(APTokenView *)token {
+    if (!self.allowDuplicates)
+    {
+        APTokenView *tokenWithSameTitle = [self tokenWithTitle:token.title];
+        if (tokenWithSameTitle)
+        {
+            [self flashToken:tokenWithSameTitle];
+            return;
+        }
+    }
+
     token.tokenField = self;
     
     [token addGestureRecognizer:[[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(userTappedToken:)]];
