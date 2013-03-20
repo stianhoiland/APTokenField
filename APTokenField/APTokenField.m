@@ -137,7 +137,7 @@ typedef BOOL (^TokenTestBlock)(APTokenView *token);
 
 - (void)addTokenWithObject:(id)object {
     if (object == nil)
-        [NSException raise:@"IllegalArgumentException" format:@"You can't add a nil object to an APTokenField"];
+        [NSException raise:NSInvalidArgumentException format:@"You can't add a nil object to an APTokenField."];
     
     NSString *title = [_tokenFieldDataSource tokenField:self titleForObject:object];;
     if (title == nil) // if we don't have a title for it, we'll use the Obj-c name
