@@ -31,6 +31,9 @@
 - (void)removeToken:(APTokenView *)token;
 - (void)flashToken:(APTokenView *)token;
 
+- (void)mapToArray:(NSArray *)array withKey:(NSString *)key;
+- (void)clear;
+
 @end
 
 @interface APTokenField (KeyboardAvoiding)

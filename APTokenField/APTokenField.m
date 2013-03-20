@@ -148,6 +148,42 @@ typedef BOOL (^TokenTestBlock)(APTokenView *token);
     [self addToken:token];
 }
 
+- (void)mapToArray:(NSArray *)array withKey:(NSString *)key {
+    [_tokens makeObjectsPerformSelector:@selector(removeFromSuperview)];
+    
+    [_tokens removeAllObjects];
+    
+    [array enumerateObjectsUsingBlock:^(id object, NSUInteger idx, BOOL *stop) {
+		
+		NSString *trimmedString = [[object valueForKey:key] stringByTrimmingCharactersInSet:[NSCharacterSet whitespaceAndNewlineCharacterSet]];
+        
+        if (trimmedString.length)
+        {
+            APTokenView *token = [APTokenView tokenWithTitle:trimmedString object:object colors:nil];
+            
+#warning TODO: using addToken: here causes multiple and uneccesary calls to delegate, [self setNeedsLayout] and [_resultsTable reloadData] (see addToken: method).
+            [self addToken:token];
+        }
+        else
+        {
+            [NSException raise:NSInvalidArgumentException format:[NSString stringWithFormat:@"Cannot map object %@ in array %@ with key %@.", object, array, key]];
+        }
+    }];
+    
+    //[self setNeedsLayout];
+}
+
+- (void)clear {
+    [_tokens makeObjectsPerformSelector:@selector(removeFromSuperview)];
+    
+    [_tokens removeAllObjects];
+    
+    [self setNeedsLayout];
+    
+    if ([_tokenFieldDelegate respondsToSelector:@selector(tokenFielddidClear:)])
+        [_tokenFieldDelegate tokenFieldDidClear:self];
+}
+
 #pragma mark - Finding tokens
 
 - (NSArray *)tokensPassingTest:(TokenTestBlock)test stopAfterFirstMatch:(BOOL)stopAfterFirstMatch {
