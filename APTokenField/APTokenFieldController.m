@@ -25,6 +25,7 @@
         _tokenField.tokenFieldDelegate = self;
         _tokenField.allowDuplicates = NO;
         _tokenField.labelText = @"States:";
+        _tokenField.rightView = [UIButton buttonWithType:UIButtonTypeContactAdd];
     }
     
     return _tokenField;
