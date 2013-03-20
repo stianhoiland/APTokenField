@@ -622,35 +622,32 @@ typedef BOOL (^TokenTestBlock)(APTokenView *token);
 
 - (void)registerForKeyboardNotifications {
     [[NSNotificationCenter defaultCenter] addObserver:self
-                                             selector:@selector(keyboardWasShown:)
+                                             selector:@selector(keyboardDidShow:)
                                                  name:UIKeyboardDidShowNotification object:nil];
     
     [[NSNotificationCenter defaultCenter] addObserver:self
-                                             selector:@selector(keyboardWasHidden:)
+                                             selector:@selector(keyboardDidHide:)
                                                  name:UIKeyboardDidHideNotification object:nil];
 }
 
-- (void)keyboardWasShown:(NSNotification *)aNotification {
-    CGRect keyboardBounds;
-    //    UIKeyboardFrameBeginUserInfoKey or UIKeyboardFrameEndUserInfoKey
-    [[aNotification.userInfo valueForKey:UIKeyboardBoundsUserInfoKey] getValue: &keyboardBounds];
-    CGFloat keyboardHeight = keyboardBounds.size.height;
-    [UIView beginAnimations:nil context:nil];
-    [UIView setAnimationBeginsFromCurrentState:YES];
-    _resultsTable.contentInset = UIEdgeInsetsMake(0, 0, keyboardBounds.size.height, 0);
-    _resultsTable.scrollIndicatorInsets = UIEdgeInsetsMake(0, 0, keyboardBounds.size.height, 0);
-    [UIView commitAnimations];
+- (void)keyboardDidShow:(NSNotification *)aNotification {    
+    CGSize keyboardSize = [[[aNotification userInfo] objectForKey:UIKeyboardFrameBeginUserInfoKey] CGRectValue].size;
+    NSNumber *animationDuration = [[aNotification userInfo] objectForKey:UIKeyboardAnimationDurationUserInfoKey];
     
-    //    [_resultsTable scrollToRowAtIndexPath:[NSIndexPath indexPathForRow:[_tokens count] inSection:0]
-    //                     atScrollPosition:UITableViewScrollPositionMiddle
-    //                             animated:YES];
+    
+    [UIView animateWithDuration:animationDuration.doubleValue animations:^{
+        _resultsTable.contentInset = UIEdgeInsetsMake(0, 0, keyboardSize.height, 0);
+        _resultsTable.scrollIndicatorInsets = UIEdgeInsetsMake(0, 0, keyboardSize.height, 0);
+    }];
 }
 
-- (void)keyboardWasHidden:(NSNotification *)aNotification {
-    [UIView beginAnimations:nil context:nil];
-    [UIView setAnimationBeginsFromCurrentState:YES];
-    _resultsTable.contentInset = UIEdgeInsetsZero;
-    [UIView commitAnimations];
+- (void)keyboardDidHide:(NSNotification *)aNotification {
+    NSNumber *animationDuration = [[aNotification userInfo] objectForKey:UIKeyboardAnimationDurationUserInfoKey];
+
+    [UIView animateWithDuration:animationDuration.doubleValue animations:^{
+        _resultsTable.contentInset = UIEdgeInsetsZero;
+        _resultsTable.scrollIndicatorInsets = UIEdgeInsetsZero;
+    }];
 }
 
 @end
