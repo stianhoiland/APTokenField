@@ -5,6 +5,10 @@
 #define TOKEN_HZ_PADDING 8.5
 #define TOKEN_VT_PADDING 2.5
 
+extern NSString *const APTokenFieldFrameDidChangeNotification;
+extern NSString *const APTokenFieldNewFrameUserInfoKey;
+extern NSString *const APTokenFieldOldFrameUserInfoKey;
+
 @interface APTokenField : UIControl <UITableViewDataSource, UITextFieldDelegate, UITableViewDelegate>
 
 @property (nonatomic) NSUInteger tokensLimit;

@@ -21,6 +21,9 @@ static NSString *const kHiddenCharacter = @"\u200B";
 
 @end
 
+NSString *const APTokenFieldFrameDidChangeNotification = @"APTokenFieldFrameDidChangeNotification";
+NSString *const APTokenFieldNewFrameUserInfoKey        = @"APTokenFieldNewFrameUserInfoKey";
+NSString *const APTokenFieldOldFrameUserInfoKey        = @"APTokenFieldOldFrameUserInfoKey";
 
 @interface APTokenField ()
 
@@ -592,6 +595,20 @@ typedef BOOL (^TokenTestBlock)(APTokenView *token);
     
     _tokenFieldDataSource = aTokenFieldDataSource;
     [_resultsTable reloadData];
+}
+
+- (void)setFrame:(CGRect)frame {
+    CGRect oldFrame = self.frame;
+    
+    [super setFrame:frame];
+	
+	NSMutableDictionary *userInfo = [NSMutableDictionary dictionaryWithCapacity:2];
+    
+    userInfo[APTokenFieldNewFrameUserInfoKey] = [NSValue valueWithCGRect:frame];
+    userInfo[APTokenFieldOldFrameUserInfoKey] = [NSValue valueWithCGRect:oldFrame];
+	
+	if (CGRectEqualToRect(oldFrame, frame) == NO)
+		[[NSNotificationCenter defaultCenter] postNotificationName:APTokenFieldFrameDidChangeNotification object:self userInfo:userInfo.copy];
 }
 
 - (void)setFont:(UIFont*)aFont {
