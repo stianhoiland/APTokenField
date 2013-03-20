@@ -1,6 +1,7 @@
 #import "APTokenFieldController.h"
 
 #import "APTokenField.h"
+#import "APTokenView.h"
 #import "AmericanStatesDataSource.h"
 
 @implementation APTokenFieldController
@@ -44,6 +45,49 @@
 - (BOOL)shouldAutorotateToInterfaceOrientation:(UIInterfaceOrientation)interfaceOrientation
 {
 	return YES;
+}
+
+#pragma mark - APTokenFieldDelegate
+
+- (void)tokenField:(APTokenField *)tokenField didAddToken:(APTokenView *)token
+{
+    NSLog(@"%@", self.statesDataSource.states);
+    NSLog(@"didAddObject %@", token);
+}
+- (void)tokenField:(APTokenField *)tokenField didRemoveToken:(APTokenView *)token
+{
+    NSLog(@"%@", self.statesDataSource.states);
+    NSLog(@"didRemoveObject %@", token);
+}
+- (void)tokenField:(APTokenField *)tokenField didTapToken:(APTokenView *)token;
+{
+    NSLog(@"didTapToken %@", token);
+}
+- (void)tokenFieldDidBeginEditing:(APTokenField *)tokenField
+{
+    NSLog(@"tokenFieldDidBeginEditing %@", tokenField);
+}
+- (void)tokenFieldDidEndEditing:(APTokenField *)tokenField
+{
+    NSLog(@"tokenFieldDidEndEditing %@", tokenField);
+    [self createNewObjectWithTitle:tokenField.text];
+}
+- (void)tokenFieldDidReturn:(APTokenField *)tokenField
+{
+    NSLog(@"tokenFieldDidReturn %@", tokenField);
+    [self createNewObjectWithTitle:tokenField.text];
+}
+
+- (void)createNewObjectWithTitle:(NSString *)title
+{
+    if ([[title stringByTrimmingCharactersInSet:[NSCharacterSet whitespaceCharacterSet]] length])
+    {
+        id newObject = title;
+        [self.statesDataSource.states addObject:newObject];
+        
+        APTokenView *newToken = [APTokenView tokenWithTitle:title object:newObject colors:nil];
+        [self.tokenField addToken:newToken];
+    }
 }
 
 @end
