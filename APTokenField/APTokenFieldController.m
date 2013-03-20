@@ -46,3 +46,49 @@
 }
 
 @end
+
+
+@implementation APTokenFieldController (EditingExtenstion)
+
+- (id)init
+{
+    if (self = [super init])
+	{
+        [[NSNotificationCenter defaultCenter] addObserver:self
+                                                 selector:@selector(keyboardWillShow:)
+                                                     name:UIKeyboardWillShowNotification
+                                                   object:nil];
+        
+        [[NSNotificationCenter defaultCenter] addObserver:self
+                                                 selector:@selector(keyboardWillHide:)
+                                                     name:UIKeyboardWillHideNotification
+                                                   object:nil];
+    }
+	
+    return self;
+}
+- (void)dealloc
+{
+    [[NSNotificationCenter defaultCenter] removeObserver:self
+                                                    name:UIKeyboardWillShowNotification
+                                                  object:nil];
+    [[NSNotificationCenter defaultCenter] removeObserver:self
+                                                    name:UIKeyboardWillHideNotification
+                                                  object:nil];
+}
+
+- (void)keyboardWillShow:(NSNotification *)notification
+{
+	[self.navigationItem setRightBarButtonItem:[[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemDone target:self action:@selector(endEditing)] animated:YES];
+}
+- (void)keyboardWillHide:(NSNotification *)notification
+{
+    [self.navigationItem setRightBarButtonItem:nil animated:YES];
+}
+
+- (void)endEditing
+{
+    [self.view endEditing:YES];
+}
+
+@end
