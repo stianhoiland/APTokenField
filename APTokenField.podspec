@@ -1,8 +1,8 @@
 Pod::Spec.new do |s|
   s.name         = "APTokenField"
-  s.version      = "0.0.5"
+  s.version      = "0.1"
   s.summary      = "A simple, lightweight, yet equally powerful version of Three20's TTPickerTextField."
-  s.homepage     = "https://github.com/unteleported/APTokenField"
+  s.homepage     = "https://github.com/stianhoiland/APTokenField"
   s.license      = {
     :type => 'New BSD',
     :text => <<-LICENSE
@@ -12,11 +12,11 @@ Pod::Spec.new do |s|
     LICENSE
   }
 
-  s.authors       = { "Arash Payan" => "arash.payan@gmail.com", "Olexandr Skrypnyk" => "sxua@unteleported.com" }
-  s.source       = { :git => "https://github.com/unteleported/APTokenField.git", :tag => "0.0.5" }
+  s.authors       = { "Arash Payan" => "arash.payan@gmail.com", "Olexandr Skrypnyk" => "sxua@unteleported.com", "Stian Gudmundsen Høiland" => "stianghoiland@gmail.com" }
+  s.source       = { :git => "https://github.com/stianhoiland/APTokenField.git", :tag => "0.1" }
 
   s.platform     = :ios, '5.0'
-  s.source_files = 'APTokenField/APTokenField.{h,m}'
+  s.source_files = 'APTokenField/APTokenField.{h,m}', 'APTokenField/APTokenView.{h,m}', 'APTokenField/APShadowView.{h,m}', 'APTokenField/APTokenFieldDataSource.{h,m}', 'APTokenField/APTokenFieldDelegate.{h,m}'
   s.frameworks = 'QuartzCore', 'CoreGraphics'
 
   s.requires_arc = true
