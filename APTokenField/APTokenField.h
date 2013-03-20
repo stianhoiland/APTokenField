@@ -32,3 +32,7 @@
 - (void)flashToken:(APTokenView *)token;
 
 @end
+
+@interface APTokenField (KeyboardAvoiding)
+- (void)registerForKeyboardNotifications;
+@end

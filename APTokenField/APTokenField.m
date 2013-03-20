@@ -87,6 +87,8 @@ typedef BOOL (^TokenTestBlock)(APTokenView *token);
         _solidLine = [[UIView alloc] initWithFrame:CGRectZero];
         _solidLine.backgroundColor = [UIColor colorWithWhite:0.85 alpha:1.0];
         [self addSubview:_solidLine];
+
+        [self registerForKeyboardNotifications];
     }
     
     return self;
@@ -611,6 +613,44 @@ typedef BOOL (^TokenTestBlock)(APTokenView *token);
         return @"";
     
     return _textField.text;
+}
+
+@end
+
+
+@implementation APTokenField (KeyboardAvoiding)
+
+- (void)registerForKeyboardNotifications {
+    [[NSNotificationCenter defaultCenter] addObserver:self
+                                             selector:@selector(keyboardWasShown:)
+                                                 name:UIKeyboardDidShowNotification object:nil];
+    
+    [[NSNotificationCenter defaultCenter] addObserver:self
+                                             selector:@selector(keyboardWasHidden:)
+                                                 name:UIKeyboardDidHideNotification object:nil];
+}
+
+- (void)keyboardWasShown:(NSNotification *)aNotification {
+    CGRect keyboardBounds;
+    //    UIKeyboardFrameBeginUserInfoKey or UIKeyboardFrameEndUserInfoKey
+    [[aNotification.userInfo valueForKey:UIKeyboardBoundsUserInfoKey] getValue: &keyboardBounds];
+    CGFloat keyboardHeight = keyboardBounds.size.height;
+    [UIView beginAnimations:nil context:nil];
+    [UIView setAnimationBeginsFromCurrentState:YES];
+    _resultsTable.contentInset = UIEdgeInsetsMake(0, 0, keyboardBounds.size.height, 0);
+    _resultsTable.scrollIndicatorInsets = UIEdgeInsetsMake(0, 0, keyboardBounds.size.height, 0);
+    [UIView commitAnimations];
+    
+    //    [_resultsTable scrollToRowAtIndexPath:[NSIndexPath indexPathForRow:[_tokens count] inSection:0]
+    //                     atScrollPosition:UITableViewScrollPositionMiddle
+    //                             animated:YES];
+}
+
+- (void)keyboardWasHidden:(NSNotification *)aNotification {
+    [UIView beginAnimations:nil context:nil];
+    [UIView setAnimationBeginsFromCurrentState:YES];
+    _resultsTable.contentInset = UIEdgeInsetsZero;
+    [UIView commitAnimations];
 }
 
 @end
