@@ -41,16 +41,12 @@ typedef BOOL (^TokenTestBlock)(APTokenView *token);
 
 @implementation APTokenField
 
-- (id)init {
-    return [self initWithFrame:CGRectZero];
-}
-
 - (id)initWithFrame:(CGRect)frame {
     self = [super initWithFrame:frame];
     if (self) {
         self.autoresizingMask = UIViewAutoresizingFlexibleWidth;
         
-        _backingView = [[UIView alloc] initWithFrame:CGRectZero];
+        _backingView = [[UIView alloc] init];
         _backingView.backgroundColor = [UIColor whiteColor];
         [self addSubview:_backingView];
         
@@ -59,7 +55,7 @@ typedef BOOL (^TokenTestBlock)(APTokenView *token);
         _tokensLimit = NSUIntegerMax;
         self.font = [UIFont systemFontOfSize:14];
         
-        _tokenContainer = [[UIView alloc] initWithFrame:CGRectZero];
+        _tokenContainer = [[UIView alloc] init];
         _tokenContainer.backgroundColor = [UIColor clearColor];
         UITapGestureRecognizer *tapGesture = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(userTappedTokenContainer)];
         [_tokenContainer addGestureRecognizer:tapGesture];
@@ -71,10 +67,10 @@ typedef BOOL (^TokenTestBlock)(APTokenView *token);
         _resultsTable.backgroundColor = [UIColor colorWithWhite:0.93f alpha:1.0f];
         [self addSubview:_resultsTable];
         
-        self.shadowView = [[APShadowView alloc] initWithFrame:CGRectZero];
+        self.shadowView = [[APShadowView alloc] init];
         [self addSubview:_shadowView];
         
-        self.textField = [[UITextField alloc] initWithFrame:CGRectZero];
+        self.textField = [[UITextField alloc] init];
         _textField.text = kHiddenCharacter;
         _textField.delegate = self;
         _textField.font = _font;
@@ -87,7 +83,7 @@ typedef BOOL (^TokenTestBlock)(APTokenView *token);
         
         self.tokens = [[NSMutableArray alloc] init];
         
-        _solidLine = [[UIView alloc] initWithFrame:CGRectZero];
+        _solidLine = [[UIView alloc] init];
         _solidLine.backgroundColor = [UIColor colorWithWhite:0.85 alpha:1.0];
         [self addSubview:_solidLine];
 
@@ -633,7 +629,7 @@ typedef BOOL (^TokenTestBlock)(APTokenView *token);
     // if there is some new text, then create and add a new label
     if ([_labelText length] != 0)
     {
-        _label = [[UILabel alloc] initWithFrame:CGRectZero];
+        _label = [[UILabel alloc] init];
         // the label's font is 15% bigger than the token font
         _label.font = [UIFont systemFontOfSize:_font.pointSize*1.15];
         _label.text = _labelText;
