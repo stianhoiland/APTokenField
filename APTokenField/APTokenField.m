@@ -35,6 +35,8 @@ NSString *const APTokenFieldOldFrameUserInfoKey        = @"APTokenFieldOldFrameU
 @property (nonatomic, strong) UIView *solidLine;
 @property (nonatomic, strong) NSDictionary *tokenColors;
 
+@property (nonatomic, readwrite) UITableView *resultsTable;
+
 typedef BOOL (^TokenTestBlock)(APTokenView *token);
 
 @end
@@ -42,55 +44,119 @@ typedef BOOL (^TokenTestBlock)(APTokenView *token);
 @implementation APTokenField
 
 - (id)initWithFrame:(CGRect)frame {
-    self = [super initWithFrame:frame];
-    if (self) {
+    
+    if (self = [super initWithFrame:frame])
+    {
         self.autoresizingMask = UIViewAutoresizingFlexibleWidth;
+        self.backgroundColor = [UIColor whiteColor];
         
+        self.numberOfResults = 0;
+        self.allowDuplicates = YES;
+        self.tokensLimit = NSUIntegerMax;
+        self.font = [UIFont systemFontOfSize:14];
+        self.tokens = [[NSMutableArray alloc] init];
+        
+        [self addSubview:self.backingView];
+        [self addSubview:self.tokenContainer];
+        [self.tokenContainer addSubview:self.textField];
+        [self addSubview:self.solidLine];
+        [self addSubview:self.resultsTable];
+        [self addSubview:self.shadowView];
+
+        [self registerForKeyboardNotifications];
+    }
+    
+    return self;
+}
+
+#pragma mark - View Hierarchy
+
+- (UILabel *)label
+{
+    if (!_label)
+    {
+        _label = [[UILabel alloc] init];
+        
+        // the label's font is 15% bigger than the token font
+        _label.font = [UIFont systemFontOfSize:_font.pointSize*1.15];
+        _label.textColor = [UIColor grayColor];
+        _label.backgroundColor = [UIColor clearColor];
+    }
+    
+    return _label;
+}
+- (UIView *)backingView
+{
+    if (!_backingView)
+    {
         _backingView = [[UIView alloc] init];
         _backingView.backgroundColor = [UIColor whiteColor];
-        [self addSubview:_backingView];
+    }
+    
+    return _backingView;
+}
+- (UITextField *)textField
+{
+    if (!_textField)
+    {
+        _textField = [[UITextField alloc] init];
         
-        _numberOfResults = 0;
-        _allowDuplicates = YES;
-        _tokensLimit = NSUIntegerMax;
-        self.font = [UIFont systemFontOfSize:14];
-        
-        _tokenContainer = [[UIView alloc] init];
-        _tokenContainer.backgroundColor = [UIColor clearColor];
-        UITapGestureRecognizer *tapGesture = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(userTappedTokenContainer)];
-        [_tokenContainer addGestureRecognizer:tapGesture];
-        [self addSubview:_tokenContainer];
-        
-        _resultsTable = [[UITableView alloc] initWithFrame:CGRectZero style:UITableViewStylePlain];
-        _resultsTable.dataSource = self;
-        _resultsTable.delegate = self;
-        _resultsTable.backgroundColor = [UIColor colorWithWhite:0.93f alpha:1.0f];
-        [self addSubview:_resultsTable];
-        
-        self.shadowView = [[APShadowView alloc] init];
-        [self addSubview:_shadowView];
-        
-        self.textField = [[UITextField alloc] init];
         _textField.text = kHiddenCharacter;
         _textField.delegate = self;
         _textField.font = _font;
         _textField.autocorrectionType = UITextAutocorrectionTypeNo;
         _textField.autocapitalizationType = UITextAutocapitalizationTypeNone;
         _textField.returnKeyType = UIReturnKeyDone;
+        
         if ([UITextField respondsToSelector:@selector(setSpellCheckingType:)])
             _textField.spellCheckingType = UITextSpellCheckingTypeNo;
-        [_tokenContainer addSubview:_textField];
-        
-        self.tokens = [[NSMutableArray alloc] init];
-        
-        _solidLine = [[UIView alloc] init];
-        _solidLine.backgroundColor = [UIColor colorWithWhite:0.85 alpha:1.0];
-        [self addSubview:_solidLine];
-
-        [self registerForKeyboardNotifications];
     }
     
-    return self;
+    return _textField;
+}
+- (UIView *)tokenContainer
+{
+    if (!_tokenContainer)
+    {
+        _tokenContainer = [[UIView alloc] init];
+        
+        _tokenContainer.backgroundColor = [UIColor clearColor];
+        [_tokenContainer addGestureRecognizer:[[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(userTappedTokenContainer)]];
+    }
+    
+    return _tokenContainer;
+}
+- (UIView *)solidLine
+{
+    if (!_solidLine)
+    {
+        _solidLine = [[UIView alloc] initWithFrame:CGRectZero];
+        _solidLine.backgroundColor = [UIColor colorWithWhite:0.85 alpha:1.0];
+    }
+    
+    return _solidLine;
+}
+- (APShadowView *)shadowView
+{
+    if (!_shadowView)
+    {
+        _shadowView = [[APShadowView alloc] init];
+    }
+    
+    return _shadowView;
+}
+- (UITableView *)resultsTable
+{
+    if (!_resultsTable)
+    {
+        _resultsTable = [[UITableView alloc] initWithFrame:CGRectZero style:UITableViewStylePlain];
+        
+        _resultsTable.dataSource = self;
+        _resultsTable.delegate = self;
+        _resultsTable.backgroundColor = [UIColor colorWithWhite:0.93f alpha:1.0f];
+    }
+    
+    return _resultsTable;
 }
 
 #pragma mark - Adding & removing tokens
@@ -613,13 +679,8 @@ typedef BOOL (^TokenTestBlock)(APTokenView *token);
     // if there is some new text, then create and add a new label
     if ([_labelText length] != 0)
     {
-        _label = [[UILabel alloc] init];
-        // the label's font is 15% bigger than the token font
-        _label.font = [UIFont systemFontOfSize:_font.pointSize*1.15];
-        _label.text = _labelText;
-        _label.textColor = [UIColor grayColor];
-        _label.backgroundColor = [UIColor clearColor];
-        [_tokenContainer addSubview:_label];
+        self.label.text = _labelText;
+        [self.tokenContainer addSubview:self.label];
     }
     
     [self setNeedsLayout];
