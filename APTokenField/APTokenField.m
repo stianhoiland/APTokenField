@@ -474,7 +474,13 @@ typedef BOOL (^TokenTestBlock)(APTokenView *token);
     if (!self.enabled)
         return NO;
     
-    if ([aTextField.text isEqualToString:kHiddenCharacter] && [string length] == 0) {
+    BOOL changeIsBackspace = ([string isEqualToString:@""] || string.length == 0);
+    BOOL textFieldIsEmpty = ([aTextField.text isEqualToString:kHiddenCharacter] ||
+                             [[aTextField.text substringWithRange:range] isEqualToString:kHiddenCharacter] ||
+                             NSEqualRanges(range, NSMakeRange(0, 0)));
+    
+    if (textFieldIsEmpty && changeIsBackspace)
+    {
         [self userTappedBackspaceOnEmptyField];
         return NO;
     }
