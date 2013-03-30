@@ -282,28 +282,6 @@ typedef BOOL (^TokenTestBlock)(APTokenView *token);
         [self becomeFirstResponder];
 }
 
-#pragma mark - UIResponder
-
-- (BOOL)canBecomeFirstResponder {
-    return YES;
-}
-
-- (BOOL)becomeFirstResponder {
-    return [_textField becomeFirstResponder];
-}
-
-- (BOOL)isFirstResponder {
-    return [_textField isFirstResponder];
-}
-
-- (BOOL)canResignFirstResponder {
-    return [_textField canResignFirstResponder];
-}
-
-- (BOOL)resignFirstResponder {
-    return [_textField resignFirstResponder];
-}
-
 #define CONTAINER_PADDING      8
 #define MINIMUM_TEXTFIELD_WIDTH   40
 #define CONTAINER_ELEMENT_VT_MARGIN 8
@@ -697,6 +675,31 @@ typedef BOOL (^TokenTestBlock)(APTokenView *token);
         _resultsTable.contentInset = UIEdgeInsetsZero;
         _resultsTable.scrollIndicatorInsets = UIEdgeInsetsZero;
     }];
+}
+
+@end
+
+
+@implementation APTokenField (UIResponderOverrides)
+
+- (BOOL)canBecomeFirstResponder {
+    return YES;
+}
+
+- (BOOL)becomeFirstResponder {
+    return [_textField becomeFirstResponder];
+}
+
+- (BOOL)isFirstResponder {
+    return [_textField isFirstResponder];
+}
+
+- (BOOL)canResignFirstResponder {
+    return [_textField canResignFirstResponder];
+}
+
+- (BOOL)resignFirstResponder {
+    return [_textField resignFirstResponder];
 }
 
 @end
