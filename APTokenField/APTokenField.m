@@ -648,6 +648,22 @@ typedef BOOL (^TokenTestBlock)(APTokenView *token);
     return _textField.text;
 }
 
+- (void)setText:(NSString *)text
+{
+    // Ensure the kHiddenCharacter is always at the beginning
+    
+	if (![text hasPrefix:kHiddenCharacter])
+	{
+        NSMutableString *prefixedText = text.mutableCopy;
+		[prefixedText insertString:kHiddenCharacter atIndex:0];
+		_textField.text = prefixedText;
+	}
+    else
+    {
+        _textField.text = text;
+    }
+}
+
 @end
 
 

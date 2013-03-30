@@ -24,7 +24,7 @@ extern NSString *const APTokenFieldOldFrameUserInfoKey;
 
 @property (nonatomic, strong) UIFont *font;
 @property (nonatomic, copy) NSString *labelText;
-@property (nonatomic, weak, readonly) NSString *text;
+@property (nonatomic, weak) NSString *text;
 
 @property (nonatomic, strong) UIView *rightView;
 
