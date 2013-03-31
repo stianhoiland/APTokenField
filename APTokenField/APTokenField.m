@@ -437,7 +437,12 @@ typedef BOOL (^TokenTestBlock)(APTokenView *token);
     _resultsTable.frame = CGRectMake(0,
                                      CGRectGetMaxY(_tokenContainer.frame),
                                      bounds.size.width,
-                                     CGRectGetMaxY(bounds)-CGRectGetMaxY(_tokenContainer.frame));
+                                     CGRectGetMaxY(self.superview.bounds)-CGRectGetMaxY(_tokenContainer.frame));
+    
+    self.frame = CGRectMake(self.frame.origin.x,
+                            self.frame.origin.y,
+                            bounds.size.width,
+                            CGRectGetMaxY(_tokenContainer.frame));
 }
 
 #pragma mark - Interaction
@@ -478,6 +483,23 @@ typedef BOOL (^TokenTestBlock)(APTokenView *token);
     if ([_tokenFieldDelegate respondsToSelector:@selector(tokenField:didTapToken:)])
         [_tokenFieldDelegate tokenField:self didTapToken:token];
 }
+
+- (BOOL)pointInside:(CGPoint)point withEvent:(UIEvent *)event {
+    /*
+     self.frame corresponds to tokenContainer. Touches outside of tokenContainer will not be forwarded to APTokenField. The resultsTable extends beyond/outside self.frame, to cover the part of the screen which is below tokenContainer. Without this method, resultsTable would not recieve touches which are intended for it.
+     */
+    
+    BOOL pointInside = NO;
+    
+    if (CGRectContainsPoint(_resultsTable.frame, point) ||
+        CGRectContainsPoint(self.frame, point))
+        pointInside = YES;
+    
+    // Don't need to check if the resultsTable is hidden, iOS is smart enough to not capture touches inside frames if the view is hidden.
+    
+    return pointInside;
+}
+
 
 #pragma mark - UITableViewDataSource
 
