@@ -406,15 +406,15 @@ typedef BOOL (^TokenTestBlock)(APTokenView *token);
     // now that we know the size of all the tokens, we can set the frame for our container
     // if there are some results, then we'll only show the last row of the container, otherwise, we'll show all of it
     float minContainerHeight = _font.lineHeight+TOKEN_VT_PADDING*2.0+2+CONTAINER_ELEMENT_VT_MARGIN*2.0;
-    float tokenContainerWidth = 0;
+    float tokenContainerWidth = bounds.size.width;
+    
     if (_rightView)
-        tokenContainerWidth = bounds.size.width-5-_rightView.bounds.size.width-5;
-    else
-        tokenContainerWidth = bounds.size.width;
-    if (_numberOfResults == 0)
-        _tokenContainer.frame = CGRectMake(0, 0, tokenContainerWidth, MAX(minContainerHeight, containerHeight+lastToken.bounds.size.height+CONTAINER_ELEMENT_VT_MARGIN));
-    else
-        _tokenContainer.frame = CGRectMake(0, -containerHeight+CONTAINER_ELEMENT_VT_MARGIN, tokenContainerWidth, MAX(minContainerHeight, containerHeight+lastToken.bounds.size.height+CONTAINER_ELEMENT_VT_MARGIN));
+        tokenContainerWidth -= 5 + _rightView.bounds.size.width + 5;
+    
+    _tokenContainer.frame = CGRectMake(0,
+                                       (_numberOfResults == 0) ? 0 : -containerHeight+CONTAINER_ELEMENT_VT_MARGIN,
+                                       tokenContainerWidth,
+                                       MAX(minContainerHeight, containerHeight+lastToken.bounds.size.height+CONTAINER_ELEMENT_VT_MARGIN));
     
     /* If there's a rightView, place it at the bottom right of the tokenContainer.
      We made sure to provide enough space for it in the logic above, so it should fit just right. */
