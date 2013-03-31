@@ -52,12 +52,12 @@
 - (void)tokenField:(APTokenField *)tokenField didAddToken:(APTokenView *)token
 {
     NSLog(@"%@", self.statesDataSource.states);
-    NSLog(@"didAddObject %@", token);
+    NSLog(@"didAddToken %@", token);
 }
 - (void)tokenField:(APTokenField *)tokenField didRemoveToken:(APTokenView *)token
 {
     NSLog(@"%@", self.statesDataSource.states);
-    NSLog(@"didRemoveObject %@", token);
+    NSLog(@"didRemoveToken %@", token);
 }
 - (void)tokenField:(APTokenField *)tokenField didTapToken:(APTokenView *)token;
 {
@@ -76,6 +76,10 @@
 {
     NSLog(@"tokenFieldDidReturn %@", tokenField);
     [self createNewObjectWithTitle:tokenField.text];
+}
+- (void)tokenFieldDidClear:(APTokenField *)tokenField
+{
+    NSLog(@"tokenFieldDidClear %@", tokenField);
 }
 
 - (void)createNewObjectWithTitle:(NSString *)title
