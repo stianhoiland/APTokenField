@@ -62,7 +62,7 @@ typedef BOOL (^TokenTestBlock)(APTokenView *token);
         [self addSubview:self.solidLine];
         [self addSubview:self.resultsTable];
         [self addSubview:self.shadowView];
-
+        
         [self registerForKeyboardNotifications];
     }
     
@@ -162,7 +162,7 @@ typedef BOOL (^TokenTestBlock)(APTokenView *token);
 #pragma mark - Adding & removing tokens
 
 - (void)addToken:(APTokenView *)token {
-
+    
     // Return if duplicates are not allowed and token is duplicate
     if (!self.allowDuplicates)
     {
@@ -174,7 +174,7 @@ typedef BOOL (^TokenTestBlock)(APTokenView *token);
             return;
         }
     }
-
+    
     // Return if delegate does not want to add this token
     if ([self.tokenFieldDelegate respondsToSelector:@selector(tokenField:shouldAddToken:)])
         if (![self.tokenFieldDelegate tokenField:self shouldAddToken:token])
@@ -199,10 +199,10 @@ typedef BOOL (^TokenTestBlock)(APTokenView *token);
     if ([self.tokenFieldDelegate respondsToSelector:@selector(tokenField:shouldRemoveToken:)])
         if (![self.tokenFieldDelegate tokenField:self shouldRemoveToken:token])
             return;
-
+    
     [token removeFromSuperview];
     [self.tokens removeObject:token];;
-
+    
     [self clearTextField];
     
     if ([self.tokenFieldDelegate respondsToSelector:@selector(tokenField:didRemoveToken:)])
@@ -756,7 +756,7 @@ typedef BOOL (^TokenTestBlock)(APTokenView *token);
                                                  name:UIKeyboardDidHideNotification object:nil];
 }
 
-- (void)keyboardDidShow:(NSNotification *)aNotification {    
+- (void)keyboardDidShow:(NSNotification *)aNotification {
     CGSize keyboardSize = [[[aNotification userInfo] objectForKey:UIKeyboardFrameBeginUserInfoKey] CGRectValue].size;
     NSNumber *animationDuration = [[aNotification userInfo] objectForKey:UIKeyboardAnimationDurationUserInfoKey];
     
@@ -769,7 +769,7 @@ typedef BOOL (^TokenTestBlock)(APTokenView *token);
 
 - (void)keyboardDidHide:(NSNotification *)aNotification {
     NSNumber *animationDuration = [[aNotification userInfo] objectForKey:UIKeyboardAnimationDurationUserInfoKey];
-
+    
     [UIView animateWithDuration:animationDuration.doubleValue animations:^{
         _resultsTable.contentInset = UIEdgeInsetsZero;
         _resultsTable.scrollIndicatorInsets = UIEdgeInsetsZero;
