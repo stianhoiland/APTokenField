@@ -254,7 +254,7 @@ typedef BOOL (^TokenTestBlock)(APTokenView *token);
     
     [self clearTextField];
     
-    if ([self.tokenFieldDelegate respondsToSelector:@selector(tokenFielddidClear:)])
+    if ([self.tokenFieldDelegate respondsToSelector:@selector(tokenFieldDidClear:)])
         [self.tokenFieldDelegate tokenFieldDidClear:self];
 }
 
