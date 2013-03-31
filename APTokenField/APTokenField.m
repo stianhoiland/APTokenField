@@ -162,54 +162,51 @@ typedef BOOL (^TokenTestBlock)(APTokenView *token);
 #pragma mark - Adding & removing tokens
 
 - (void)addToken:(APTokenView *)token {
+
+    // Return if duplicates are not allowed and token is duplicate
     if (!self.allowDuplicates)
     {
         APTokenView *tokenWithSameTitle = [self tokenWithTitle:token.title];
+        
         if (tokenWithSameTitle)
         {
             [self flashToken:tokenWithSameTitle];
             return;
         }
     }
-    
-    if ([_tokenFieldDelegate respondsToSelector:@selector(tokenField:shouldAddToken:)])
-    {
-        if (![_tokenFieldDelegate tokenField:self shouldAddToken:token])
-            return;
-    }
 
-    token.tokenField = self;
+    // Return if delegate does not want to add this token
+    if ([self.tokenFieldDelegate respondsToSelector:@selector(tokenField:shouldAddToken:)])
+        if (![self.tokenFieldDelegate tokenField:self shouldAddToken:token])
+            return;
     
+    // Configure the token
+    token.tokenField = self;
     [token addGestureRecognizer:[[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(userTappedToken:)]];
     
-    [_tokens addObject:token];
-    [_tokenContainer addSubview:token];
+    [self.tokens addObject:token];
+    [self.tokenContainer addSubview:token];
     
-    [_tokenFieldDataSource tokenField:self searchQuery:@""];
-    _textField.text = kHiddenCharacter;
+    [self clearTextField];
     
-    [self setNeedsLayout];
-    
-    [_resultsTable reloadData];
-    
-    if ([_tokenFieldDelegate respondsToSelector:@selector(tokenField:didAddToken:)])
-        [_tokenFieldDelegate tokenField:self didAddToken:token];
+    if ([self.tokenFieldDelegate respondsToSelector:@selector(tokenField:didAddToken:)])
+        [self.tokenFieldDelegate tokenField:self didAddToken:token];
 }
 
 - (void)removeToken:(APTokenView *)token {
     
-    if ([_tokenFieldDelegate respondsToSelector:@selector(tokenField:shouldRemoveToken:)])
-    {
-        if (![_tokenFieldDelegate tokenField:self shouldRemoveToken:token])
+    // Return if delegate does not want to remove this token
+    if ([self.tokenFieldDelegate respondsToSelector:@selector(tokenField:shouldRemoveToken:)])
+        if (![self.tokenFieldDelegate tokenField:self shouldRemoveToken:token])
             return;
-    }
 
     [token removeFromSuperview];
-    [_tokens removeObject:token];;
-    [self setNeedsLayout];
+    [self.tokens removeObject:token];;
+
+    [self clearTextField];
     
-    if ([_tokenFieldDelegate respondsToSelector:@selector(tokenField:didRemoveToken:)])
-        [_tokenFieldDelegate tokenField:self didRemoveToken:token];
+    if ([self.tokenFieldDelegate respondsToSelector:@selector(tokenField:didRemoveToken:)])
+        [self.tokenFieldDelegate tokenField:self didRemoveToken:token];
 }
 
 
@@ -252,14 +249,13 @@ typedef BOOL (^TokenTestBlock)(APTokenView *token);
 }
 
 - (void)clear {
-    [_tokens makeObjectsPerformSelector:@selector(removeFromSuperview)];
+    [self.tokens makeObjectsPerformSelector:@selector(removeFromSuperview)];
+    [self.tokens removeAllObjects];
     
-    [_tokens removeAllObjects];
+    [self clearTextField];
     
-    [self setNeedsLayout];
-    
-    if ([_tokenFieldDelegate respondsToSelector:@selector(tokenFielddidClear:)])
-        [_tokenFieldDelegate tokenFieldDidClear:self];
+    if ([self.tokenFieldDelegate respondsToSelector:@selector(tokenFielddidClear:)])
+        [self.tokenFieldDelegate tokenFieldDidClear:self];
 }
 
 #pragma mark - Finding tokens
@@ -359,6 +355,13 @@ typedef BOOL (^TokenTestBlock)(APTokenView *token);
     
     if (!self.isFirstResponder)
         [self becomeFirstResponder];
+}
+
+- (void)clearTextField {
+    self.text = @"";
+    [self.tokenFieldDataSource tokenField:self searchQuery:@""];
+    [self.resultsTable reloadData];
+    [self setNeedsLayout];
 }
 
 #define CONTAINER_PADDING      8
