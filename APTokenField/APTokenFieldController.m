@@ -49,14 +49,37 @@
 
 #pragma mark - APTokenFieldDelegate
 
+- (BOOL)tokenField:(APTokenField *)tokenField shouldAddToken:(APTokenView *)token
+{
+    BOOL shouldAdd = YES;
+    
+    // This allows in-line creation of new states
+    if (![self.statesDataSource.states containsObject:token.object])
+    {
+        [self.statesDataSource.states addObject:token.object];
+        NSLog(@"%@", self.statesDataSource.states);
+        NSLog(@"Added Object: %@", token.object);
+    }
+
+    NSLog(@"tokenField: %@ shouldAddToken: %@ (%@)", tokenField, token, (shouldAdd) ? @"YES" : @"NO");
+
+    return shouldAdd;
+}
+- (BOOL)tokenField:(APTokenField *)tokenField shouldRemoveToken:(APTokenView *)token
+{
+    BOOL shouldRemove = YES;
+
+    NSLog(@"tokenField: %@ shouldRemoveToken: %@ (%@)", tokenField, token, (shouldRemove) ? @"YES" : @"NO");
+    
+    return shouldRemove;
+}
+
 - (void)tokenField:(APTokenField *)tokenField didAddToken:(APTokenView *)token
 {
-    NSLog(@"%@", self.statesDataSource.states);
     NSLog(@"didAddToken %@", token);
 }
 - (void)tokenField:(APTokenField *)tokenField didRemoveToken:(APTokenView *)token
 {
-    NSLog(@"%@", self.statesDataSource.states);
     NSLog(@"didRemoveToken %@", token);
 }
 - (void)tokenField:(APTokenField *)tokenField didTapToken:(APTokenView *)token;
@@ -70,24 +93,23 @@
 - (void)tokenFieldDidEndEditing:(APTokenField *)tokenField
 {
     NSLog(@"tokenFieldDidEndEditing %@", tokenField);
-    [self createNewObjectWithTitle:tokenField.text];
+    [self createNewObjectAndTokenWithTitle:tokenField.text];
 }
 - (void)tokenFieldDidReturn:(APTokenField *)tokenField
 {
     NSLog(@"tokenFieldDidReturn %@", tokenField);
-    [self createNewObjectWithTitle:tokenField.text];
+    [self createNewObjectAndTokenWithTitle:tokenField.text];
 }
 - (void)tokenFieldDidClear:(APTokenField *)tokenField
 {
     NSLog(@"tokenFieldDidClear %@", tokenField);
 }
 
-- (void)createNewObjectWithTitle:(NSString *)title
+- (void)createNewObjectAndTokenWithTitle:(NSString *)title
 {
-    if ([[title stringByTrimmingCharactersInSet:[NSCharacterSet whitespaceCharacterSet]] length])
+    if ([[title stringByTrimmingCharactersInSet:[NSCharacterSet whitespaceAndNewlineCharacterSet]] length])
     {
         id newObject = title;
-        [self.statesDataSource.states addObject:newObject];
         
         APTokenView *newToken = [APTokenView tokenWithTitle:title object:newObject colors:nil];
         [self.tokenField addToken:newToken];

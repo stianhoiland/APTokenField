@@ -5,6 +5,9 @@
 
 @optional
 
+- (BOOL)tokenField:(APTokenField *)tokenField shouldAddToken:(APTokenView *)token;
+- (BOOL)tokenField:(APTokenField *)tokenField shouldRemoveToken:(APTokenView *)token;
+
 - (void)tokenField:(APTokenField *)tokenField didAddToken:(APTokenView *)token;
 - (void)tokenField:(APTokenField *)tokenField didRemoveToken:(APTokenView *)token;
 

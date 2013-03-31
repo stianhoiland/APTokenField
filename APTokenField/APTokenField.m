@@ -172,6 +172,12 @@ typedef BOOL (^TokenTestBlock)(APTokenView *token);
         }
     }
     
+    if ([_tokenFieldDelegate respondsToSelector:@selector(tokenField:shouldAddToken:)])
+    {
+        if (![_tokenFieldDelegate tokenField:self shouldAddToken:token])
+            return;
+    }
+
     token.tokenField = self;
     
     [token addGestureRecognizer:[[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(userTappedToken:)]];
@@ -191,6 +197,13 @@ typedef BOOL (^TokenTestBlock)(APTokenView *token);
 }
 
 - (void)removeToken:(APTokenView *)token {
+    
+    if ([_tokenFieldDelegate respondsToSelector:@selector(tokenField:shouldRemoveToken:)])
+    {
+        if (![_tokenFieldDelegate tokenField:self shouldRemoveToken:token])
+            return;
+    }
+
     [token removeFromSuperview];
     [_tokens removeObject:token];;
     [self setNeedsLayout];
