@@ -31,7 +31,6 @@ NSString *const APTokenFieldOldFrameUserInfoKey        = @"APTokenFieldOldFrameU
 @property (nonatomic, strong) UITextField *textField;
 @property (nonatomic, strong) UILabel *label;
 @property (nonatomic, strong) UIView *tokenContainer;
-@property (nonatomic, strong) UIView *backingView;
 @property (nonatomic, strong) UIView *solidLine;
 @property (nonatomic, strong) NSDictionary *tokenColors;
 
@@ -56,7 +55,6 @@ typedef BOOL (^TokenTestBlock)(APTokenView *token);
         self.font = [UIFont systemFontOfSize:14];
         self.tokens = [[NSMutableArray alloc] init];
         
-        [self addSubview:self.backingView];
         [self addSubview:self.tokenContainer];
         [self.tokenContainer addSubview:self.textField];
         [self addSubview:self.solidLine];
@@ -84,16 +82,6 @@ typedef BOOL (^TokenTestBlock)(APTokenView *token);
     }
     
     return _label;
-}
-- (UIView *)backingView
-{
-    if (!_backingView)
-    {
-        _backingView = [[UIView alloc] init];
-        _backingView.backgroundColor = [UIColor whiteColor];
-    }
-    
-    return _backingView;
 }
 - (UITextField *)textField
 {
@@ -427,12 +415,6 @@ typedef BOOL (^TokenTestBlock)(APTokenView *token);
         _tokenContainer.frame = CGRectMake(0, 0, tokenContainerWidth, MAX(minContainerHeight, containerHeight+lastToken.bounds.size.height+CONTAINER_ELEMENT_VT_MARGIN));
     else
         _tokenContainer.frame = CGRectMake(0, -containerHeight+CONTAINER_ELEMENT_VT_MARGIN, tokenContainerWidth, MAX(minContainerHeight, containerHeight+lastToken.bounds.size.height+CONTAINER_ELEMENT_VT_MARGIN));
-    
-    // layout the backing view
-    _backingView.frame = CGRectMake(_tokenContainer.frame.origin.x,
-                                    _tokenContainer.frame.origin.y,
-                                    bounds.size.width,
-                                    _tokenContainer.frame.size.height);
     
     /* If there's a rightView, place it at the bottom right of the tokenContainer.
      We made sure to provide enough space for it in the logic above, so it should fit just right. */
