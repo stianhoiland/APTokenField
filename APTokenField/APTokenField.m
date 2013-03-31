@@ -163,10 +163,20 @@ typedef BOOL (^TokenTestBlock)(APTokenView *token);
 
 - (void)addToken:(APTokenView *)token {
     
-    // Return if duplicates are not allowed and token is duplicate
+    NSString *trimmedTokenTitle = [token.title stringByTrimmingCharactersInSet:[NSCharacterSet whitespaceAndNewlineCharacterSet]];
+
+    // Clear text field and return if token title is whitespace only
+    if (!trimmedTokenTitle.length)
+    {
+        NSLog(@"WARNING: Token title was empty! %@", token);
+        [self clearTextField];
+        return;
+    }
+    
+    // Flash duplicate and return if duplicates are not allowed and token is duplicate
     if (!self.allowDuplicates)
     {
-        APTokenView *tokenWithSameTitle = [self tokenWithTitle:token.title];
+        APTokenView *tokenWithSameTitle = [self tokenWithTitle:trimmedTokenTitle];
         
         if (tokenWithSameTitle)
         {
@@ -175,14 +185,15 @@ typedef BOOL (^TokenTestBlock)(APTokenView *token);
         }
     }
     
+    // Configure the token
+    token.title = trimmedTokenTitle;
+    token.tokenField = self;
+    [token addGestureRecognizer:[[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(userTappedToken:)]];
+    
     // Return if delegate does not want to add this token
     if ([self.tokenFieldDelegate respondsToSelector:@selector(tokenField:shouldAddToken:)])
         if (![self.tokenFieldDelegate tokenField:self shouldAddToken:token])
             return;
-    
-    // Configure the token
-    token.tokenField = self;
-    [token addGestureRecognizer:[[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(userTappedToken:)]];
     
     [self.tokens addObject:token];
     [self.tokenContainer addSubview:token];
@@ -229,23 +240,10 @@ typedef BOOL (^TokenTestBlock)(APTokenView *token);
     [_tokens removeAllObjects];
     
     [array enumerateObjectsUsingBlock:^(id object, NSUInteger idx, BOOL *stop) {
-		
-		NSString *trimmedString = [[object valueForKey:key] stringByTrimmingCharactersInSet:[NSCharacterSet whitespaceAndNewlineCharacterSet]];
         
-        if (trimmedString.length)
-        {
-            APTokenView *token = [APTokenView tokenWithTitle:trimmedString object:object colors:nil];
-            
 #warning TODO: using addToken: here causes multiple and uneccesary calls to delegate, [self setNeedsLayout] and [_resultsTable reloadData] (see addToken: method).
-            [self addToken:token];
-        }
-        else
-        {
-            [NSException raise:NSInvalidArgumentException format:[NSString stringWithFormat:@"Cannot map object %@ in array %@ with key %@.", object, array, key]];
-        }
+        [self addToken:[APTokenView tokenWithTitle:[object valueForKey:key] object:object colors:nil]];
     }];
-    
-    //[self setNeedsLayout];
 }
 
 - (void)clear {

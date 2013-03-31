@@ -107,13 +107,10 @@
 
 - (void)createNewObjectAndTokenWithTitle:(NSString *)title
 {
-    if ([[title stringByTrimmingCharactersInSet:[NSCharacterSet whitespaceAndNewlineCharacterSet]] length])
-    {
-        id newObject = title;
-        
-        APTokenView *newToken = [APTokenView tokenWithTitle:title object:newObject colors:nil];
-        [self.tokenField addToken:newToken];
-    }
+    id newObject = title;
+    
+    APTokenView *newToken = [APTokenView tokenWithTitle:title object:newObject colors:nil];
+    [self.tokenField addToken:newToken];
 }
 
 @end
