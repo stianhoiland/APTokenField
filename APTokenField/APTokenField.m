@@ -156,7 +156,7 @@ typedef BOOL (^TokenTestBlock)(APTokenView *token);
     // Clear text field and return if token title is whitespace only
     if (!trimmedTokenTitle.length)
     {
-        NSLog(@"WARNING: Token title was empty! %@", token);
+        NSLog(@"WARNING: Token title was empty!");
         [self clearTextField];
         return;
     }
@@ -168,6 +168,7 @@ typedef BOOL (^TokenTestBlock)(APTokenView *token);
         
         if (tokenWithSameTitle)
         {
+            NSLog(@"WARNING: Token was duplicate!");
             [self flashToken:tokenWithSameTitle];
             return;
         }
@@ -223,9 +224,8 @@ typedef BOOL (^TokenTestBlock)(APTokenView *token);
 }
 
 - (void)mapToArray:(NSArray *)array withKey:(NSString *)key {
-    [_tokens makeObjectsPerformSelector:@selector(removeFromSuperview)];
-    
-    [_tokens removeAllObjects];
+    [self.tokens makeObjectsPerformSelector:@selector(removeFromSuperview)];
+    [self.tokens removeAllObjects];
     
     [array enumerateObjectsUsingBlock:^(id object, NSUInteger idx, BOOL *stop) {
         
@@ -499,7 +499,6 @@ typedef BOOL (^TokenTestBlock)(APTokenView *token);
     
     return pointInside;
 }
-
 
 #pragma mark - UITableViewDataSource
 
