@@ -223,15 +223,47 @@ typedef BOOL (^TokenTestBlock)(APTokenView *token);
     [self addToken:token];
 }
 
+- (void)addTokenSilently:(APTokenView *)token {
+    
+    NSString *trimmedTokenTitle = [token.title stringByTrimmingCharactersInSet:[NSCharacterSet whitespaceAndNewlineCharacterSet]];
+    
+    // Return if token title is whitespace only
+    if (!trimmedTokenTitle.length)
+    {
+        NSLog(@"WARNING: Token title was empty!");
+        return;
+    }
+    
+    // Return if duplicates are not allowed and token is duplicate
+    if (!self.allowDuplicates)
+    {
+        APTokenView *tokenWithSameTitle = [self tokenWithTitle:trimmedTokenTitle];
+        
+        if (tokenWithSameTitle)
+        {
+            NSLog(@"WARNING: Token was duplicate!");
+            return;
+        }
+    }
+    
+    // Configure the token
+    token.title = trimmedTokenTitle;
+    token.tokenField = self;
+    [token addGestureRecognizer:[[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(userTappedToken:)]];
+    
+    [self.tokens addObject:token];
+    [self.tokenContainer addSubview:token];
+}
+
 - (void)mapToArray:(NSArray *)array withKey:(NSString *)key {
     [self.tokens makeObjectsPerformSelector:@selector(removeFromSuperview)];
     [self.tokens removeAllObjects];
     
     [array enumerateObjectsUsingBlock:^(id object, NSUInteger idx, BOOL *stop) {
-        
-#warning TODO: using addToken: here causes multiple and uneccesary calls to delegate, [self setNeedsLayout] and [_resultsTable reloadData] (see addToken: method).
-        [self addToken:[APTokenView tokenWithTitle:[object valueForKey:key] object:object colors:nil]];
+        [self addTokenSilently:[APTokenView tokenWithTitle:[object valueForKey:key] object:object colors:nil]];
     }];
+    
+    [self clearTextField];
 }
 
 - (void)clear {
