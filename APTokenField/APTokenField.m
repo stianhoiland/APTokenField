@@ -535,11 +535,9 @@ typedef BOOL (^TokenTestBlock)(APTokenView *token);
     
     BOOL pointInside = NO;
     
-    if (CGRectContainsPoint(_resultsTable.frame, point) ||
+    if ((CGRectContainsPoint(_resultsTable.frame, point) && !_resultsTable.hidden) ||
         CGRectContainsPoint(self.frame, point))
         pointInside = YES;
-    
-    // Don't need to check if the resultsTable is hidden, iOS is smart enough to not capture touches inside frames if the view is hidden.
     
     return pointInside;
 }
