@@ -67,6 +67,18 @@ typedef BOOL (^TokenTestBlock)(APTokenView *token);
     return self;
 }
 
+- (id)initWithFrame:(CGRect)frame populateWithObjects:(NSArray *)initialObjects forKey:(NSString *)key {
+    
+    if (self = [super initWithFrame:frame])
+    {
+        [initialObjects enumerateObjectsUsingBlock:^(id object, NSUInteger idx, BOOL *stop) {
+            [self addTokenSilently:[APTokenView tokenWithTitle:[object valueForKey:key] object:object colors:nil]];
+        }];
+    }
+    
+    return self;
+}
+
 #pragma mark - View Hierarchy
 
 - (UILabel *)label

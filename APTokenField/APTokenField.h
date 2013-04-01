@@ -11,6 +11,8 @@ extern NSString *const APTokenFieldOldFrameUserInfoKey;
 
 @interface APTokenField : UIControl <UITableViewDataSource, UITextFieldDelegate, UITableViewDelegate>
 
+- (id)initWithFrame:(CGRect)frame populateWithObjects:(NSArray *)initialObjects forKey:(NSString *)key;
+
 @property (nonatomic) NSUInteger tokensLimit;
 @property (nonatomic) BOOL allowDuplicates; // dis/allow tokens with identical title string. Default is YES
 @property (nonatomic, strong) NSMutableArray *tokens;
